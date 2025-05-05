@@ -32,7 +32,10 @@ export default function FireFightPage() {
       <div className="flex h-[calc(100vh-75px)] overflow-hidden">
         <SidebarFireFight
           activeSection={activeSection}
-          setActiveSection={setActiveSection}
+          setActiveSection={(section) => {
+            setActiveSection(section);
+            setData(undefined); // Clear modal data on section change
+          }}
         />
         <div className="flex p-4 overflow-y-auto">{renderContent()}</div>
         {data && (
