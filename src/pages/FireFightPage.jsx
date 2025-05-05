@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import TopBarSecondary from "../components/TopBarSecondary";
 
 // Content Components
-import HeadLossForm from "../components/fireFight/HeadLossForm";
+import FireHeadLossForm from "../components/fireFight/FireHeadLossForm";
 import FirePumpPage from "../components/fireFight/FirePumpPage";
 
 import SidebarFireFight from "../components/fireFight/SidebarFireFight";
 import RightModal from "../components/shared/RightModal";
-import HLFormModal from "../components/fireFight/HLFormModal";
+import FireHLFormModal from "../components/fireFight/FireHLFormModal";
 import FirePumpPageModal from "../components/fireFight/FirePumpPageModal";
 
 export default function FireFightPage() {
@@ -17,11 +17,11 @@ export default function FireFightPage() {
   const renderContent = () => {
     switch (activeSection) {
       case "head-loss":
-        return <HeadLossForm setData={setData} />;
+        return <FireHeadLossForm setData={setData} />;
       case "fire-pump":
         return <FirePumpPage setData={setData} />;
       default:
-        return <HeadLossForm />;
+        return <FireHeadLossForm />;
     }
   };
 
@@ -40,7 +40,7 @@ export default function FireFightPage() {
         <div className="flex p-4 overflow-y-auto">{renderContent()}</div>
         {data && (
           <RightModal>
-            {activeSection === "head-loss" && <HLFormModal data={data} />}
+            {activeSection === "head-loss" && <FireHLFormModal data={data} />}
             {activeSection === "fire-pump" && <FirePumpPageModal data={data} />}
           </RightModal>
         )}

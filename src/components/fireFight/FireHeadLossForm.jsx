@@ -58,7 +58,7 @@ const SelectRow = ({ label, value, onChange, options }) => (
   </div>
 );
 
-const HeadLossForm = ({ setData }) => {
+const FireHeadLossForm = ({ setData }) => {
   const [building, setBuilding] = useState("Metro Station");
   const [diameter, setDiameter] = useState("");
   const [material, setMaterial] = useState("");
@@ -240,4 +240,4 @@ const HeadLossForm = ({ setData }) => {
   );
 };
 
-export default HeadLossForm;
+export default FireHeadLossForm;

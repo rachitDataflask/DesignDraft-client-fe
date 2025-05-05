@@ -6,7 +6,7 @@ import TopBarSecondary from "../components/TopBarSecondary";
 
 import WaterDemandForm from "../components/plumbing/WaterDemandForm";
 import SidebarPlumbing from "../components/plumbing/SidebarPlumbing";
-import HeadLossForm from "../components/fireFight/HeadLossForm";
+import PlumbingHeadLossForm from "../components/plumbing/PlumbingHeadLossForm";
 import WaterSupplyPipesForm from "../components/plumbing/WaterSupplyPipesForm";
 import DrainagePipesForm from "../components/plumbing/DrainagePipesForm";
 import PlumbingPumpForm from "../components/plumbing/PlumbingPumpForm";
@@ -19,7 +19,7 @@ import DrainagePipesModal from "../components/plumbing/DrainagePipesModal";
 import PlumbingPumpModal from "../components/plumbing/PlumbingPumpModal";
 import RainWaterDroppingModal from "../components/plumbing/RainWaterDroppingModal";
 import RwhModal from "../components/plumbing/RwhModal";
-import HLFormModal from "../components/fireFight/HLFormModal";
+import PlumbingHLFormModal from "../components/plumbing/PlumbingHLFormModal";
 
 export default function PlumbingPage() {
   const [activeSection, setActiveSection] = useState("water-demand"); // Default
@@ -35,7 +35,7 @@ export default function PlumbingPage() {
         return <DrainagePipesForm setData={setData} />;
 
       case "head-loss":
-        return <HeadLossForm setData={setData} />;
+        return <PlumbingHeadLossForm setData={setData} />;
       case "plumbing-pump":
         return <PlumbingPumpForm setData={setData} />;
       case "RainWater-Dropping":
@@ -71,7 +71,7 @@ export default function PlumbingPage() {
             {activeSection === "drainage-pipe" && (
               <DrainagePipesModal data={data} />
             )}
-            {activeSection === "head-loss" && <HLFormModal data={data} />}
+            {activeSection === "head-loss" && <PlumbingHLFormModal data={data} />}
             {activeSection === "plumbing-pump" && (
               <PlumbingPumpModal data={data} />
             )}

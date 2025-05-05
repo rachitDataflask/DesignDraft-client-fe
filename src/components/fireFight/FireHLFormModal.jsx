@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 
-export default function HLFormModal({ data }) {
+export default function FireHLFormModal({ data }) {
   const handleDownload = () => {
     const doc = new jsPDF();
 
