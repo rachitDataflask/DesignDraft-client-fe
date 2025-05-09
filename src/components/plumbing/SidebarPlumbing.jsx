@@ -1,10 +1,7 @@
 import React from "react";
 import HeadLossIcon from "../../icons/HeadLossIcon";
 import FirePumpIcon from "../../icons/FirePumpIcon";
-import DropletIcon from "../../icons/DropletIcon";
-import CalculationIcon from "../../icons/CalculationIcon";
-import DocumentationIcon from "../../icons/DocumentationIcon";
-import FileBckIcon from "../../icons/FileBckIcon";
+
 import WaterDemandIcon from "../../icons/WaterDemandIcon";
 import WaterSupplyIcon from "../../icons/WaterSupplyIcon";
 import DrainagePipeIcon from "../../icons/DrainagePipeIcon";
