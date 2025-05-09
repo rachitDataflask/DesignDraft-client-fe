@@ -16,7 +16,7 @@ const ReactangleIcon = ({ className }) => {
           y="4.09943"
           width="16.9385"
           height="10.8012"
-          stroke="#FFFFFF"
+          stroke="#4D4D4D"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeDasharray="2.5 2.5"

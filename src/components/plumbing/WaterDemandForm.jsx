@@ -87,7 +87,8 @@ const WaterDemandForm = () => {
   const [makeUpWaterUnit, setMakeUpWaterUnit] = useState("Litre/hour");
 
   const [filterCleaningWater, setFilterCleaningWater] = useState("10");
-  const [filterCleaningWaterUnit, setFilterCleaningWaterUnit] = useState("Litre/hour");
+  const [filterCleaningWaterUnit, setFilterCleaningWaterUnit] =
+    useState("Litre/hour");
 
   const [operationalHour, setOperationalHour] = useState("18");
   const [operationalHourUnit, setOperationalHourUnit] = useState("Hour");
@@ -107,7 +108,9 @@ const WaterDemandForm = () => {
       {/* Header */}
       <div className="flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
         <div>
-          <h2 className="text-[14px] font-semibold text-[#111827] leading-none">Water Demand</h2>
+          <h2 className="text-[14px] font-semibold text-[#111827] leading-none">
+            Water Demand
+          </h2>
           <p className="text-[11px] text-[#9CA3AF] mt-[4px]">No update yet</p>
         </div>
         <button
@@ -130,49 +133,67 @@ const WaterDemandForm = () => {
           label="Number of Staff"
           unit={staffUnit}
           value={staff}
-          onChange={(val, isUnit) => isUnit ? setStaffUnit(val) : setStaff(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setStaffUnit(val) : setStaff(val)
+          }
         />
         <InputRow
           label="Number of Visitors"
           unit={visitorsUnit}
           value={visitors}
-          onChange={(val, isUnit) => isUnit ? setVisitorsUnit(val) : setVisitors(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setVisitorsUnit(val) : setVisitors(val)
+          }
         />
         <InputRow
           label="Area for Cleaning"
           unit={cleaningUnit}
           value={cleaningArea}
-          onChange={(val, isUnit) => isUnit ? setCleaningUnit(val) : setCleaningArea(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setCleaningUnit(val) : setCleaningArea(val)
+          }
         />
         <InputRow
           label="Area for Gardening"
           unit={gardeningUnit}
           value={gardeningArea}
-          onChange={(val, isUnit) => isUnit ? setGardeningUnit(val) : setGardeningArea(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setGardeningUnit(val) : setGardeningArea(val)
+          }
         />
         <InputRow
           label="PD Area"
           unit={pdAreaUnit}
           value={pdArea}
-          onChange={(val, isUnit) => isUnit ? setPdAreaUnit(val) : setPdArea(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setPdAreaUnit(val) : setPdArea(val)
+          }
         />
         <InputRow
           label="Make Up Water for WTP"
           unit={makeUpWaterUnit}
           value={makeUpWater}
-          onChange={(val, isUnit) => isUnit ? setMakeUpWaterUnit(val) : setMakeUpWater(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setMakeUpWaterUnit(val) : setMakeUpWater(val)
+          }
         />
         <InputRow
           label="Filter Cleaning Water"
           unit={filterCleaningWaterUnit}
           value={filterCleaningWater}
-          onChange={(val, isUnit) => isUnit ? setFilterCleaningWaterUnit(val) : setFilterCleaningWater(val)}
+          onChange={(val, isUnit) =>
+            isUnit
+              ? setFilterCleaningWaterUnit(val)
+              : setFilterCleaningWater(val)
+          }
         />
         <InputRow
           label="Operational Hours"
           unit={operationalHourUnit}
           value={operationalHour}
-          onChange={(val, isUnit) => isUnit ? setOperationalHourUnit(val) : setOperationalHour(val)}
+          onChange={(val, isUnit) =>
+            isUnit ? setOperationalHourUnit(val) : setOperationalHour(val)
+          }
         />
         <InputRow1
           label="Diversity Factor"
