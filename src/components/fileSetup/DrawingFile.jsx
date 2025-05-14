@@ -2,9 +2,12 @@ import { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 import UploadIcon from "../../icons/UploadIcon";
 import RotationIcon from "../../icons/RotationIcon";
+import { useSelector } from "react-redux";
 
 const DrawingFile = () => {
   const [coordinateSystem, setCoordinateSystem] = useState("User defined");
+  const x = useSelector((state) => state.project.floor.x);
+  const y = useSelector((state) => state.project.floor.y);
 
   return (
     <div className="w-[340px] rounded-xl bg-white shadow-sm p-4 text-sm font-medium text-gray-800">
@@ -66,7 +69,7 @@ const DrawingFile = () => {
             <p className="mb-1 text-[13px]">Position</p>
             <div className="flex gap-2">
               {/* X */}
-              <div className="relative w-1/3">
+              <div className="relative w-1/2">
                 <img
                   src="src/assets/X.svg"
                   alt="X"
@@ -74,13 +77,12 @@ const DrawingFile = () => {
                 />
                 <input
                   type="text"
-                  readOnly
-                  value="25"
+                  value={x}
                   className="w-full bg-gray-200 rounded-md pl-7 pr-2 py-2 text-[13px] text-gray-500"
                 />
               </div>
               {/* Y */}
-              <div className="relative w-1/3">
+              <div className="relative w-1/2">
                 <img
                   src="src/assets/Y.svg"
                   alt="Y"
@@ -88,22 +90,7 @@ const DrawingFile = () => {
                 />
                 <input
                   type="text"
-                  readOnly
-                  value="0"
-                  className="w-full bg-gray-200 rounded-md pl-7 pr-2 py-2 text-[13px] text-gray-500"
-                />
-              </div>
-              {/* Z */}
-              <div className="relative w-1/3">
-                <img
-                  src="src/assets/Z.svg"
-                  alt="Z"
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 opacity-60"
-                />
-                <input
-                  type="text"
-                  readOnly
-                  value="0"
+                  value={y}
                   className="w-full bg-gray-200 rounded-md pl-7 pr-2 py-2 text-[13px] text-gray-500"
                 />
               </div>

@@ -1,14 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackArrowIcon from "../icons/BackArrowIcon";
 import EyeIcon from "../icons/EyeIcon";
 import EyeCloseIcon from "../icons/EyeCloseIcon";
+import { useLoginMutation } from "../redux/features/api/api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/features/app/userSLice";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [token, setToken] = useState();
   const navigate = useNavigate();
+  const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setUser({ email: email, token: token }));
+  }, [email, token, dispatch]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await login({ email: email, password: password });
+      console.log(response.data);
+      setToken(response.data.token);
+    } catch (err) {
+      console.log(err);
+    }
+    navigate("/home");
+  };
 
   return (
     <div className="flex">
@@ -60,7 +82,10 @@ export default function Login() {
                   Signup
                 </Link>
               </div>
-              <button className="bg-blue-500 text-xl font-bold text-white hover:bg-blue-600 rounded-md p-2 cursor-pointer">
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-500 text-xl font-bold text-white hover:bg-blue-600 rounded-md p-2 cursor-pointer"
+              >
                 Login
               </button>
             </form>
