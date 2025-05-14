@@ -10,13 +10,17 @@ const InputRow = ({ label, unit, value, onChange }) => (
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-1/2 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 bg-gray-200 focus:outline-none focus:border-[#0083EE]"
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
+      {/* 
       {unit && (
-        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 bg-gray-200 focus:outline-none focus:border-[#0083EE]">
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
           <option>{unit}</option>
         </select>
-      )}
+      )} 
+      */}
     </div>
   </div>
 );
@@ -39,16 +43,25 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const WaterSupplyPipesForm = ({ setData }) => {
-  const [room, setRoom] = useState("Select");
-  const [wc, setWc] = useState(0);
+  // const [room, setRoom] = useState("Select");
   const [wb, setWb] = useState(0);
+  const [healthFaucet, setHealthFaucet] = useState(0);
+  const [bibTaps, setBibTaps] = useState(0);
+  const [serviceSink, setServiceSink] = useState(0);
+  const [kitchenSink, setKitchenSink] = useState(0);
+  const [waterFountain, setWaterFountain] = useState(0);
+
+  const [wc, setWc] = useState(0);
+
   const [urinal, setUrinal] = useState(0);
-  const [shower, setShower] = useState(0);
-  const [tap, setTap] = useState(0);
   const [fixtureUnit, setFixtureUnit] = useState(0);
-  const [flowRate, setFlowRate] = useState(0);
+  const [flowrateLpm, setFlowRateLpm] = useState(0);
+  const [flowrateMeter, setFlowRateMeter] = useState(0);
+
+  // const [shower, setShower] = useState(0);
   const [velocity, setVelocity] = useState(0);
-  const [material, setMaterial] = useState("Select");
+  const [requiredPipeSize, setRequiredPipeSize] = useState(0);
+  const [providedPipeSize, setProvidedPipeSize] = useState(0);
 
   const handleCalculate = async () => {
     const res = await fetch("/api/water_supply_ps", {
@@ -98,55 +111,103 @@ const WaterSupplyPipesForm = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
+        {/* <SelectRow
           label="Select Room"
           value={room}
           onChange={setRoom}
           options={["Select", "Bathroom", "Kitchen", "Toilet"]}
+        /> */}
+        <InputRow
+          label="Number of WB"
+          //  unit="Nos"
+          value={wb}
+          onChange={setWb}
         />
-        <InputRow label="Number of WC" unit="Nos" value={wc} onChange={setWc} />
-        <InputRow label="Number of WB" unit="Nos" value={wb} onChange={setWb} />
+        <InputRow
+          label="Number of Health Faucet"
+          //  unit="Nos"
+          value={healthFaucet}
+          onChange={setHealthFaucet}
+        />
+        <InputRow
+          label="Number of Bib Taps"
+          //  unit="Nos"
+          value={bibTaps}
+          onChange={setBibTaps}
+        />
+        <InputRow
+          label="Number of Service Sink"
+          //  unit="Nos"
+          value={serviceSink}
+          onChange={setServiceSink}
+        />
+        <InputRow
+          label="Number of Kitchen Sink"
+          //  unit="Nos"
+          value={kitchenSink}
+          onChange={setKitchenSink}
+        />
+        <InputRow
+          label="Number of Water Fountain"
+          //  unit="Nos"
+          value={waterFountain}
+          onChange={setWaterFountain}
+        />
+
+        <InputRow
+          label="Number of WC"
+          //  unit="Nos"
+          value={wc}
+          onChange={setWc}
+        />
         <InputRow
           label="Number of Urinal"
-          unit="Nos"
+          // unit="Nos"
           value={urinal}
           onChange={setUrinal}
         />
-        <InputRow
+        {/* <InputRow
           label="Number of Shower"
           unit="Nos"
           value={shower}
           onChange={setShower}
-        />
-        <InputRow
-          label="Number of Tap"
-          unit="Nos"
-          value={tap}
-          onChange={setTap}
-        />
+        /> */}
+
         <InputRow
           label="Total Fixture Unit"
-          unit="FU"
+          // unit="FU"
           value={fixtureUnit}
           onChange={setFixtureUnit}
         />
         <InputRow
-          label="Flow Rate Q"
-          unit="m³/s"
-          value={flowRate}
-          onChange={setFlowRate}
+          label="Flow in LPM per Table 3 of NBC"
+          // unit="m³/s"
+          value={flowrateLpm}
+          onChange={setFlowRateLpm}
+        />
+        <InputRow
+          label="Flow in m3/s"
+          // unit="m³/s"
+          value={flowrateMeter}
+          onChange={setFlowRateMeter}
         />
         <InputRow
           label="Velocity"
-          unit="m/s"
+          // unit="m/s"
           value={velocity}
           onChange={setVelocity}
         />
-        <SelectRow
-          label="Pipe Material"
-          value={material}
-          onChange={setMaterial}
-          options={["Select", "PVC", "GI", "HDPE"]}
+        <InputRow
+          label="Required Pipe Size"
+          //  unit="m/s"
+          value={requiredPipeSize}
+          onChange={setRequiredPipeSize}
+        />
+        <InputRow
+          label="Pipe size Provided in mm"
+          //  unit="m/s"
+          value={providedPipeSize}
+          onChange={setProvidedPipeSize}
         />
       </div>
 

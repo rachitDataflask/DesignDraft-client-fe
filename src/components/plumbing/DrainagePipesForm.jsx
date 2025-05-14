@@ -2,24 +2,25 @@ import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 
 // Reusable Components
-const InputRow = ({ label, value, onChange, unit }) => (
+const InputRow = ({ label, unit, value, onChange }) => (
   <div className="mb-[14px]">
-    <label className="block text-[11px] text-gray-600 mb-[6px]">{label}</label>
-    <div className="flex gap-2">
+    <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
+    <div className="flex gap-[8px]">
       <input
         type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-1/2 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none bg-gray-200 focus:border-[#0083EE] hover:border-gray-400"
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
+      {/* 
       {unit && (
-        <select
-          className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none bg-gray-200 focus:border-[#0083EE] hover:border-gray-400"
-          disabled
-        >
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
           <option>{unit}</option>
         </select>
-      )}
+      )} 
+      */}
     </div>
   </div>
 );
@@ -42,16 +43,25 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const DrainagePipesForm = ({ setData }) => {
-  const [room, setRoom] = useState("");
-  const [wc, setWc] = useState(10);
+  // const [room, setRoom] = useState("");
+
   const [wb, setWb] = useState(10);
-  const [urinal, setUrinal] = useState(10);
+  const [healthFaucet, setHealthFaucet] = useState(10);
+  const [floorDrain, setFloorDrain] = useState(10);
+  const [serviceSink, setServiceSink] = useState(10);
+  const [kitchenSink, setKitchenSink] = useState(10);
   const [shower, setShower] = useState(10);
-  const [tap, setTap] = useState(10);
+
+  const [wc, setWc] = useState(10);
+
+  const [urinal, setUrinal] = useState(10);
+
+  const [urinalTap, setUrinalTap] = useState(10);
   const [fixtureUnit, setFixtureUnit] = useState(646);
-  const [flowRate, setFlowRate] = useState(50);
+  const [SoilWastePipeSize, setSoilWastePipeSize] = useState(50);
+  const [pipeSlope, setPipeSlope] = useState(1.5);
   const [velocity, setVelocity] = useState(1.5);
-  const [pipeMaterial, setPipeMaterial] = useState("");
+  const [pipeSize, setPipeSize] = useState("");
 
   const handleCalculate = async () => {
     const res = await fetch("/api/water_drainage_ps", {
@@ -100,55 +110,93 @@ const DrainagePipesForm = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
+        {/* <SelectRow
           label="Select Room"
           value={room}
           onChange={setRoom}
           options={["Toilet", "Bathroom", "Kitchen"]}
-        />
-        <InputRow label="Number of WC" value={wc} onChange={setWc} unit="Nos" />
-        <InputRow label="Number of WB" value={wb} onChange={setWb} unit="Nos" />
+        /> */}
+
         <InputRow
-          label="Number of Urinal"
-          value={urinal}
-          onChange={setUrinal}
-          unit="Nos"
+          label="Number of WB"
+          value={wb}
+          onChange={setWb}
+          //  unit="Nos"
         />
+        <InputRow
+          label="Number of Health Faucet"
+          value={healthFaucet}
+          onChange={setHealthFaucet}
+        />
+        <InputRow
+          label="Number of Floor Drain"
+          value={floorDrain}
+          onChange={setFloorDrain}
+        />
+        <InputRow
+          label="Number of Service Sink"
+          value={serviceSink}
+          onChange={setServiceSink}
+        />
+        <InputRow
+          label="Number of Kitchen Sink"
+          value={kitchenSink}
+          onChange={setKitchenSink}
+        />
+
         <InputRow
           label="Number of Shower"
           value={shower}
           onChange={setShower}
-          unit="Nos"
+          // unit="Nos"
         />
         <InputRow
-          label="Number of Tap"
-          value={tap}
-          onChange={setTap}
-          unit="Nos"
+          label="Number of WC"
+          value={wc}
+          onChange={setWc}
+          // unit="Nos"
+        />
+        <InputRow
+          label="Number of Urinal"
+          value={urinal}
+          onChange={setUrinal}
+          // unit="Nos"
+        />
+        <InputRow
+          label="Number of Urinal Tap"
+          value={urinalTap}
+          onChange={setUrinalTap}
+          // unit="Nos"
         />
         <InputRow
           label="Total Fixture Unit"
           value={fixtureUnit}
           onChange={setFixtureUnit}
-          unit="FU"
+          // unit="FU"
         />
         <InputRow
-          label="Flow Rate Q"
-          value={flowRate}
-          onChange={setFlowRate}
-          unit="m³/s"
+          label="Soil & Waste Pipe Size as per NBC"
+          value={SoilWastePipeSize}
+          onChange={setSoilWastePipeSize}
+          // unit="m³/s"
+        />
+        <InputRow
+          label="Pipe Slope"
+          value={pipeSlope}
+          onChange={setPipeSlope}
+          // unit="%"
         />
         <InputRow
           label="Velocity"
           value={velocity}
           onChange={setVelocity}
-          unit="m/s"
+          // unit="m/s"
         />
-        <SelectRow
-          label="Pipe Material"
-          value={pipeMaterial}
-          onChange={setPipeMaterial}
-          options={["PVC", "CI", "HDPE"]}
+        <InputRow
+          label="Pipe Size"
+          value={pipeSize}
+          onChange={setPipeSize}
+          // unit="m"
         />
       </div>
 

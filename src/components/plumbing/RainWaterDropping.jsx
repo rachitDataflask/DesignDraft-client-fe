@@ -2,15 +2,26 @@ import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 
 // Reusable InputRow without unit
-const InputRow = ({ label, value, onChange }) => (
+const InputRow = ({ label, unit, value, onChange }) => (
   <div className="mb-[14px]">
     <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 hover:border-gray-400"
-    />
+    <div className="flex gap-[8px]">
+      <input
+        type="number"
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
+      />
+      {/* 
+      {unit && (
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
+          <option>{unit}</option>
+        </select>
+      )} 
+      */}
+    </div>
   </div>
 );
 
@@ -32,12 +43,13 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const RainWaterDropping = ({ setData }) => {
-  const [building, setBuilding] = useState("Metro Station");
+  // const [building, setBuilding] = useState("Metro Station");
 
   const [area, setArea] = useState("250");
   const [pipes, setPipes] = useState("2");
   const [intensity, setIntensity] = useState("109");
   const [discharge, setDischarge] = useState("0.9");
+  const [pipeDiameterMM, setPipeDiameterMM] = useState("5");
 
   const handleCalculate = async () => {
     const res = await fetch("/api/rainwater_dropping_sizing", {
@@ -81,12 +93,12 @@ const RainWaterDropping = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
+        {/* <SelectRow
           label="Select Building"
           value={building}
           onChange={setBuilding}
           options={["Metro Station", "Mall", "Office"]}
-        />
+        /> */}
         <InputRow label="Roof Area" value={area} onChange={setArea} />
         <InputRow
           label="Number of Pipes Provided"
@@ -102,6 +114,11 @@ const RainWaterDropping = ({ setData }) => {
           label="Coefficient of Discharge"
           value={discharge}
           onChange={setDischarge}
+        />
+        <InputRow
+          label="Pipe Diameter in MM"
+          value={pipeDiameterMM}
+          onChange={setPipeDiameterMM}
         />
       </div>
 

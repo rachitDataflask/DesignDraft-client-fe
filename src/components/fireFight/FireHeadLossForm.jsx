@@ -10,13 +10,17 @@ const InputRow = ({ label, unit, value, onChange }) => (
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-1/2 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200  focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400"
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
+      {/* 
       {unit && (
-        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200  focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
           <option>{unit}</option>
         </select>
-      )}
+      )} 
+      */}
     </div>
   </div>
 );
@@ -59,23 +63,30 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const FireHeadLossForm = ({ setData }) => {
-  const [building, setBuilding] = useState("Metro Station");
-  const [diameter, setDiameter] = useState("");
-  const [material, setMaterial] = useState("");
+  // const [building, setBuilding] = useState("Metro Station");
+  const [pipeDiameter, setPipeDiameter] = useState("");
+  const [pipeMaterial, setPipeMaterial] = useState("");
 
-  const [horizontal, setHorizontal] = useState(1000);
-  const [vertical, setVertical] = useState(1000);
-  const [elbow45, setElbow45] = useState(0);
-  const [elbow90, setElbow90] = useState(0);
-  const [tee90, setTee90] = useState(0);
-  const [gateValve, setGateValve] = useState(0);
-  const [globeValve, setGlobeValve] = useState(0);
-  const [angleValve, setAngleValve] = useState(0);
-  const [butterflyValve, setButterflyValve] = useState(0);
-  const [nonReturnValve, setNonReturnValve] = useState(0);
+  const [lengthHorizontal, setLengthHorizontal] = useState("Nos");
+  const [lengthVertical, setLengthVertical] = useState("Nos");
+  const [se90, setSe90] = useState(0);
+  const [se45, setSe45] = useState(0);
+  const [we90, setWe90] = useState(0);
+  const [gv, setGv] = useState(0);
+  const [nrv, setNrv] = useState(0);
+  const [bfv, setBfv] = useState(0);
+  const [glv, setGlv] = useState(0);
+  const [other, setOther] = useState(0);
   const [equivalentLength, setEquivalentLength] = useState(0);
   const [frictionCoeff, setFrictionCoeff] = useState(0);
   const [flowRate, setFlowRate] = useState(0);
+  // const [pressureLossPerMeter, setPressureLossPerMeter] = useState(0);
+  // const [pressureLossTotalLength, setPressureLossTotalLength] = useState(0);
+  // const [pressureLossTotalLengthPerMeter, setPressureLossTotalLengthPerMeter] =
+  //   useState(0);
+  const [staticLoss, setStaticLoss] = useState(0);
+  const [staticGain, setStaticGain] = useState(0);
+  // const [totalPressureLoss, setTotalPressureLoss] = useState(0);
 
   const handleCalculate = async () => {
     const res = await fetch("/api/fire-headloss", {
@@ -129,88 +140,88 @@ const FireHeadLossForm = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white ">
-        <SelectRow
+        {/* <SelectRow
           label="Select Building"
           onChange={setBuilding}
           options={["Metro Station", "Mall", "Office"]}
-        />
-        {console.log(building)}
+        /> */}
+        {/* {console.log(building)} */}
         <SelectRow
           label="Select Pipe Diameter"
-          value={diameter}
-          onChange={setDiameter}
+          value={pipeDiameter}
+          onChange={setPipeDiameter}
           options={["100mm", "150mm", "200mm"]}
         />
         <SelectRow
           label="Select Pipe Material"
-          value={material}
-          onChange={setMaterial}
+          value={pipeMaterial}
+          onChange={setPipeMaterial}
           options={["GI", "CI", "PVC"]}
         />
 
         <InputRow
-          label="Horizontal Length"
-          unit="m"
-          value={horizontal}
-          onChange={setHorizontal}
+          label="Pipe Horizontal Length"
+          // unit="m"
+          value={lengthHorizontal}
+          onChange={setLengthHorizontal}
         />
         <InputRow
-          label="Vertical Length"
-          unit="m"
-          value={vertical}
-          onChange={setVertical}
+          label="Pipe Vertical Length"
+          // unit="m"
+          value={lengthVertical}
+          onChange={setLengthVertical}
         />
         <InputRow
-          label="Screwed Elbow 45°"
-          unit="Nos"
-          value={elbow45}
-          onChange={setElbow45}
+          label="SE 90°"
+          //  unit="Nos"
+          value={se90}
+          onChange={setSe90}
         />
         <InputRow
-          label="Screwed Elbow 90°"
-          unit="Nos"
-          value={elbow90}
-          onChange={setElbow90}
+          label="SE 45°"
+          // unit="Nos"
+          value={se45}
+          onChange={setSe45}
         />
         <InputRow
-          label="Screwed Tee 90°"
-          unit="Nos"
-          value={tee90}
-          onChange={setTee90}
+          label="WE 90°"
+          // unit="Nos"
+          value={we90}
+          onChange={setWe90}
         />
         <InputRow
-          label="Gate Valve"
-          unit="Nos"
-          value={gateValve}
-          onChange={setGateValve}
+          label="GV"
+          // unit="Nos"
+          value={gv}
+          onChange={setGv}
         />
         <InputRow
-          label="Globe Valve"
-          unit="Nos"
-          value={globeValve}
-          onChange={setGlobeValve}
+          label="NRV"
+          // unit="Nos"
+          value={nrv}
+          onChange={setNrv}
         />
         <InputRow
-          label="Angle Valve"
-          unit="Nos"
-          value={angleValve}
-          onChange={setAngleValve}
+          label="BFV"
+          //  unit="Nos"
+          value={bfv}
+          onChange={setBfv}
         />
         <InputRow
-          label="Butterfly Valve"
-          unit="Nos"
-          value={butterflyValve}
-          onChange={setButterflyValve}
+          label="GLV"
+          // unit="Nos"
+          value={glv}
+          onChange={setGlv}
         />
         <InputRow
-          label="Non Return Valve"
-          unit="Nos"
-          value={nonReturnValve}
-          onChange={setNonReturnValve}
+          label="OTHER"
+          // unit="Nos"
+          value={other}
+          onChange={setOther}
         />
         <InputRow
           label="Equivalent Length of Pipes & Fittings"
-          unit="m"
+          // unit="m"
           value={equivalentLength}
           onChange={setEquivalentLength}
         />
@@ -221,10 +232,46 @@ const FireHeadLossForm = ({ setData }) => {
         />
         <InputRow
           label="Flow rate Q"
-          unit="m³/s"
+          // unit="m³/s"
           value={flowRate}
           onChange={setFlowRate}
         />
+        {/* <InputRow
+          label="Pressure Loss Per Meter Length of Pipe"
+          unit="Bar"
+          value={pressureLossPerMeter}
+          onChange={setPressureLossPerMeter}
+        /> */}
+        {/* <InputRow
+          label="Pressure loss of total length of pipe"
+          unit="Bar"
+          value={pressureLossTotalLength}
+          onChange={setPressureLossTotalLength}
+        /> */}
+        {/* <InputRow
+          label="Pressure loss of total length of pipe Per Meter"
+          unit="m"
+          value={pressureLossTotalLengthPerMeter}
+          onChange={setPressureLossTotalLengthPerMeter}
+        /> */}
+        <InputRow
+          label="Static Loss"
+          // unit="m"
+          value={staticLoss}
+          onChange={setStaticLoss}
+        />
+        <InputRow
+          label="Static Gain"
+          // unit="m"
+          value={staticGain}
+          onChange={setStaticGain}
+        />
+        {/* <InputRow
+          label="Total Pressure Loss"
+          unit="Bar"
+          value={totalPressureLoss}
+          onChange={setTotalPressureLoss}
+        /> */}
       </div>
 
       {/* Bottom Button */}

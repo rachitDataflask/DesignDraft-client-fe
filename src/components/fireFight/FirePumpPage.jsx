@@ -9,13 +9,17 @@ const InputRow = ({ label, unit, value, onChange }) => (
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-1/2 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border  border-gray-200  focus:outline-none focus:border-[#0083EE] bg-gray-200 hover:border-gray-400"
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
+      {/* 
       {unit && (
-        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200  focus:outline-none focus:border-[#0083EE] bg-gray-200 hover:border-gray-400">
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
           <option>{unit}</option>
         </select>
-      )}
+      )} 
+      */}
     </div>
   </div>
 );
@@ -38,16 +42,21 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const FirePumpPage = ({ setData }) => {
-  const [pumpType, setPumpType] = useState("Sprinkler Pump");
-  const [pdArea, setPdArea] = useState(646);
-  const [buildingHeight, setBuildingHeight] = useState(646);
-  const [residualHead, setResidualHead] = useState(1000);
-  const [frictionLoss, setFrictionLoss] = useState(1000);
+  // const [pumpType, setPumpType] = useState("Sprinkler Pump");
+  const [stationArea, setStationArea] = useState(3000);
+  const [totalPdArea, setTotalPdArea] = useState(250);
+  const [stationHeight, setStationHeight] = useState(15);
+
+  const [flowrateMeter, setFlowrateMeter] = useState(0.038);
   const [pipeMaterial, setPipeMaterial] = useState("GI");
-  const [pressure, setPressure] = useState(1833);
-  const [flow, setFlow] = useState(2167.5);
-  const [totalHead, setTotalHead] = useState(50);
+  const [frictionalLossCoefficient, setFrictionalLossCoefficient] =
+    useState(120);
+  const [pipeDiameter, setPipeDiameter] = useState(150);
+  const [residualHead, setResidualHead] = useState(50);
+  const [totalPressureLoss, setTotalPressureLoss] = useState(70);
+  const [totalHead, setTotalHead] = useState(70);
   const [efficiency, setEfficiency] = useState(70);
+  const [pumpCapacity, setPumpCapacity] = useState(70);
 
   const handleCalculate = async () => {
     const res = await fetch("/api/firepump", {
@@ -99,60 +108,83 @@ const FirePumpPage = ({ setData }) => {
 
       {/* Scrollable Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white overflow-hidden">
-        <SelectRow
+        {/* <SelectRow
           label="Select Pump Type"
           value={pumpType}
           onChange={setPumpType}
           options={["Sprinkler Pump", "Jockey Pump", "Main Pump"]}
+        /> */}
+        <InputRow
+          label="Station Area"
+          // unit="m²"
+          value={stationArea}
+          onChange={setStationArea}
         />
         <InputRow
           label="Total PD Area"
-          unit="m²"
-          value={pdArea}
-          onChange={setPdArea}
+          // unit="m"
+          value={totalPdArea}
+          onChange={setTotalPdArea}
         />
         <InputRow
-          label="Building Height"
-          unit="m"
-          value={buildingHeight}
-          onChange={setBuildingHeight}
+          label="Station Height"
+          // unit="m"
+          value={stationHeight}
+          onChange={setStationHeight}
         />
         <InputRow
-          label="Residual Head"
-          unit="m"
-          value={residualHead}
-          onChange={setResidualHead}
-        />
-        <InputRow
-          label="Friction Loss"
-          unit="m"
-          value={frictionLoss}
-          onChange={setFrictionLoss}
+          label="Flow Rate Through Pipe Q (m2/s)"
+          // unit="m"
+          value={flowrateMeter}
+          onChange={setFlowrateMeter}
         />
         <SelectRow
           label="Pipe Material"
+          // unit="m"
           value={pipeMaterial}
           onChange={setPipeMaterial}
           options={["GI", "CI", "PVC"]}
         />
         <InputRow
-          label="Pressure"
-          unit="Bar"
-          value={pressure}
-          onChange={setPressure}
+          label="Frictional Loss Coefficient"
+          value={frictionalLossCoefficient}
+          onChange={setFrictionalLossCoefficient}
         />
-        <InputRow label="Flow" unit="m³/s" value={flow} onChange={setFlow} />
+        <InputRow
+          label="Pipe Diameter"
+          // unit="Bar"
+          value={pipeDiameter}
+          onChange={setPipeDiameter}
+        />
+        <InputRow
+          label="Residual Head"
+          // unit="m³/s"
+          value={residualHead}
+          onChange={setResidualHead}
+        />
+        <InputRow
+          label="Total Pressure Loss"
+          // unit="m"
+          value={totalPressureLoss}
+          onChange={setTotalPressureLoss}
+        />
         <InputRow
           label="Total Head"
-          unit="m"
+          // unit="m"
           value={totalHead}
           onChange={setTotalHead}
         />
         <InputRow
           label="Efficiency"
-          unit="%"
+          // unit="%"
           value={efficiency}
           onChange={setEfficiency}
+        />
+        <InputRow
+          label="Pump Capacity"
+          // unit="%"
+          value={pumpCapacity}
+          onChange={setPumpCapacity}
         />
       </div>
 
