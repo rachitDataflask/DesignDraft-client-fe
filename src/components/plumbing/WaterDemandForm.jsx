@@ -7,20 +7,20 @@ const InputRow = ({ label, unit, value, onChange }) => (
     <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
     <div className="flex gap-[8px]">
       <input
-        type="text"
+        type="number"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-1/2 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 hover:border-gray-400"
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
+      {/* 
       {unit && (
-        <select
-          value={unit}
-          onChange={(e) => onChange(e.target.value, true)}
-          className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 text-[#374151] hover:border-gray-400"
-        >
-          <option value={unit}>{unit}</option>
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
+          <option>{unit}</option>
         </select>
-      )}
+      )} 
+      */}
     </div>
   </div>
 );
@@ -66,34 +66,41 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const WaterDemandForm = ({ setData }) => {
-  const [building, setBuilding] = useState("Metro Station");
+  // const [building, setBuilding] = useState("Metro Station");
 
-  const [staff, setStaff] = useState("50");
-  const [staffUnit, setStaffUnit] = useState("Nos");
+  const [staff, setStaff] = useState();
+  // const [staffUnit, setStaffUnit] = useState("Nos");
 
-  const [visitors, setVisitors] = useState("1500");
-  const [visitorsUnit, setVisitorsUnit] = useState("Nos");
+  const [passenger, setPassenger] = useState();
+  // const [passengerUnit, setPassengerUnit] = useState("Nos");
+  const [pdArea, setPdArea] = useState();
+  // const [pdAreaUnit, setPdAreaUnit] = useState("Sq.m");
+  const [pdOccupancy, setPdOccupancy] = useState();
+  // const [pdOccupancyUnit, setPdOccupancyUnit] = useState("Sq.m");
 
-  const [cleaningArea, setCleaningArea] = useState("2000");
-  const [cleaningUnit, setCleaningUnit] = useState("Sq. m.");
+  const [stationCleaningArea, setStationCleaningArea] = useState();
+  // const [stationCleaningUnit, setStationCleaningUnit] = useState("Sq. m");
 
-  const [gardeningArea, setGardeningArea] = useState("646");
-  const [gardeningUnit, setGardeningUnit] = useState("Sq. m.");
+  const [gardeningArea, setGardeningArea] = useState();
+  // const [gardeningUnit, setGardeningUnit] = useState("Sq.m");
 
-  const [pdArea, setPdArea] = useState("250");
-  const [pdAreaUnit, setPdAreaUnit] = useState("Sq. m.");
+  const [totalWaterRequirement, setTotalWaterRequirement] = useState();
+  // const [totalWaterRequirementUnit, setTotalWaterRequirementUnit] =
+  //   useState("Litre/hour");
 
-  const [makeUpWater, setMakeUpWater] = useState("15");
-  const [makeUpWaterUnit, setMakeUpWaterUnit] = useState("Litre/hour");
+  const [ugWaterTankRequirementFullDay, setUgWaterTankRequirementFullDay] =
+    useState();
+  // const [ugWaterTankRequirementFullDayUnit, setUgWaterTankRequirementFullDayUnit] =
+  //   useState("Litre/hour");
+  const [ugWaterTankRequirementHalfDay, setUgWaterTankRequirementHalfDay] =
+    useState();
+  // const [ugWaterTankRequirementHalfDayUnit, setUgWaterTankRequirementHalfDayUnit] =
+  //   useState("Litre/hour");
 
-  const [filterCleaningWater, setFilterCleaningWater] = useState("10");
-  const [filterCleaningWaterUnit, setFilterCleaningWaterUnit] =
-    useState("Litre/hour");
+  // const [operationalHour, setOperationalHour] = useState("18");
+  // const [operationalHourUnit, setOperationalHourUnit] = useState("Hour");
 
-  const [operationalHour, setOperationalHour] = useState("18");
-  const [operationalHourUnit, setOperationalHourUnit] = useState("Hour");
-
-  const [diversity, setDiversity] = useState("70%");
+  // const [diversity, setDiversity] = useState("70%");
 
   const handleCalculate = async () => {
     const res = await fetch("/api/water_demand_elevated", {
@@ -142,83 +149,113 @@ const WaterDemandForm = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
+        {/* <SelectRow
           label="Select Building"
           value={building}
           onChange={setBuilding}
           options={["Metro Station", "Mall", "Office"]}
-        />
+        /> */}
         <InputRow
           label="Number of Staff"
-          unit={staffUnit}
+          // unit={staffUnit}
           value={staff}
-          onChange={(val, isUnit) =>
-            isUnit ? setStaffUnit(val) : setStaff(val)
-          }
+          onChange={setStaff}
+          // onChange={(val, isUnit) =>
+          //   isUnit ? setStaffUnit(val) : setStaff(val)
+          // }
         />
         <InputRow
-          label="Number of Visitors"
-          unit={visitorsUnit}
-          value={visitors}
-          onChange={(val, isUnit) =>
-            isUnit ? setVisitorsUnit(val) : setVisitors(val)
-          }
-        />
-        <InputRow
-          label="Area for Cleaning"
-          unit={cleaningUnit}
-          value={cleaningArea}
-          onChange={(val, isUnit) =>
-            isUnit ? setCleaningUnit(val) : setCleaningArea(val)
-          }
-        />
-        <InputRow
-          label="Area for Gardening"
-          unit={gardeningUnit}
-          value={gardeningArea}
-          onChange={(val, isUnit) =>
-            isUnit ? setGardeningUnit(val) : setGardeningArea(val)
-          }
+          label="Number of Passengers"
+          // unit={passengerUnit}
+          value={passenger}
+          onChange={setPassenger}
+          // onChange={(val, isUnit) =>
+          //   isUnit ? setPassengerUnit(val) : setPassenger(val)
+          // }
         />
         <InputRow
           label="PD Area"
-          unit={pdAreaUnit}
+          // unit={pdAreaUnit}
           value={pdArea}
-          onChange={(val, isUnit) =>
-            isUnit ? setPdAreaUnit(val) : setPdArea(val)
-          }
+          // onChange={(val, isUnit) =>
+          //   isUnit ? setPdAreaUnit(val) : setPdArea(val)
+          // }
+          onChange={setPdArea}
         />
         <InputRow
-          label="Make Up Water for WTP"
-          unit={makeUpWaterUnit}
-          value={makeUpWater}
-          onChange={(val, isUnit) =>
-            isUnit ? setMakeUpWaterUnit(val) : setMakeUpWater(val)
-          }
+          label="PD Occupancy"
+          // unit={pdAreaUnit}
+          value={pdOccupancy}
+          // onChange={(val, isUnit) =>
+          //   isUnit ? setPdAreaUnit(val) : setPdArea(val)
+          // }
+          onChange={setPdOccupancy}
         />
         <InputRow
-          label="Filter Cleaning Water"
-          unit={filterCleaningWaterUnit}
-          value={filterCleaningWater}
-          onChange={(val, isUnit) =>
-            isUnit
-              ? setFilterCleaningWaterUnit(val)
-              : setFilterCleaningWater(val)
-          }
+          label="Staion Area for Cleaning"
+          // unit={stationCleaningUnit}
+          value={stationCleaningArea}
+          // onChange={(val, isUnit) =>
+          //   isUnit ? setStationCleaningUnit(val) : setStationCleaningArea(val)
+          // }
+          onChange={setStationCleaningArea}
         />
         <InputRow
+          label="Area for Gardening"
+          // unit={gardeningUnit}
+          value={gardeningArea}
+          // onChange={(val, isUnit) =>
+          //   isUnit ? setGardeningUnit(val) : setGardeningArea(val)
+          // }
+          onChange={setGardeningArea}
+        />
+
+        <InputRow
+          label="Total Water Requirement"
+          // unit={totalWaterRequirementUnit}
+          value={totalWaterRequirement}
+          // onChange={(val, isUnit) =>
+          //   isUnit
+          //     ? setTotalWaterRequirementUnit(val)
+          //     : setTotalWaterRequirement(val)
+          // }
+          onChange={setTotalWaterRequirement}
+        />
+        <InputRow
+          label="UG Water Tank Requirement For Full Day"
+          // unit={ugWaterTankRequirementUnit}
+          value={ugWaterTankRequirementFullDay}
+          // onChange={(val, isUnit) =>
+          //   isUnit
+          //     ? setUgWaterTankRequirementUnit(val)
+          //     : setUgWaterTankRequirement(val)
+          // }
+          onChange={setUgWaterTankRequirementFullDay}
+        />
+        <InputRow
+          label="UG Water Tank Requirement For Half Day"
+          // unit={ugWaterTankRequirementUnit}
+          value={ugWaterTankRequirementHalfDay}
+          // onChange={(val, isUnit) =>
+          //   isUnit
+          //     ? setUgWaterTankRequirementUnit(val)
+          //     : setUgWaterTankRequirement(val)
+          // }
+          onChange={setUgWaterTankRequirementHalfDay}
+        />
+        {/* <InputRow
           label="Operational Hours"
           unit={operationalHourUnit}
           value={operationalHour}
           onChange={(val, isUnit) =>
             isUnit ? setOperationalHourUnit(val) : setOperationalHour(val)
           }
-        />
-        <InputRow1
+        /> */}
+        {/* <InputRow1
           label="Diversity Factor"
           value={diversity}
           onChange={setDiversity}
-        />
+        /> */}
       </div>
 
       {/* Bottom Button */}

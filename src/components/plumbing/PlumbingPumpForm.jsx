@@ -2,26 +2,25 @@ import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 
 // Reusable InputRow
-const InputRow = ({ label, unit, value, onChange, disabled = false }) => (
+const InputRow = ({ label, unit, value, onChange }) => (
   <div className="mb-[14px]">
     <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
     <div className="flex gap-[8px]">
       <input
-        type="text"
+        type="number"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        className="w-1/2 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 bg-gray-200 focus:outline-none focus:border-[#0083EE] hover:border-gray-400"
-        placeholder={label}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
+      {/* 
       {unit && (
-        <select
-          className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 bg-gray-200 focus:outline-none focus:border-[#0083EE] hover:border-gray-400"
-          disabled
-        >
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
           <option>{unit}</option>
         </select>
-      )}
+      )} 
+      */}
     </div>
   </div>
 );
@@ -69,19 +68,19 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const PlumbingPumpForm = ({ setData }) => {
-  const [building, setBuilding] = useState("Metro Station");
-  const [totalWaterDemand, setTotalWaterDemand] = useState("");
+  // const [building, setBuilding] = useState("Metro Station");
+  const [totalWaterToPump, setTotalWaterToPump] = useState("");
   const [fillingTime, setFillingTime] = useState("");
-  const [buildingHeight, setBuildingHeight] = useState("");
-  const [flowRate, setFlowRate] = useState("");
+  const [statonHeight, setStatonHeight] = useState("");
+  const [flowrateMeter, setFlowRateMeter] = useState("");
   const [pipeMaterial, setPipeMaterial] = useState("Select");
   const [frictionLoss, setFrictionLoss] = useState("");
   const [pipeDiameter, setPipeDiameter] = useState("Select");
-  const [residualPressure, setResidualPressure] = useState("");
+  const [residualHead, setResidualHead] = useState("");
   const [pressureLoss, setPressureLoss] = useState("");
   const [totalHead, setTotalHead] = useState("");
   const [efficiency, setEfficiency] = useState("");
-  const [fillingTimeUnit] = useState("Hour");
+  const [pumpCapacity, setPumpCapacity] = useState("Hour");
 
   const handleCalculate = async () => {
     const res = await fetch("/api/pump-data", {
@@ -126,34 +125,34 @@ const PlumbingPumpForm = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
+        {/* <SelectRow
           label="Select Building"
           value={building}
           onChange={setBuilding}
           options={["Metro Station"]}
-        />
-        <InputRow1
-          label="Total Water Demand"
-          value={totalWaterDemand}
-          onChange={setTotalWaterDemand}
+        /> */}
+        <InputRow
+          label="Total Water To Pump"
+          value={totalWaterToPump}
+          onChange={setTotalWaterToPump}
         />
         <InputRow
           label="Filling Time"
-          unit={fillingTimeUnit}
+          // unit={fillingTimeUnit}
           value={fillingTime}
           onChange={setFillingTime}
         />
         <InputRow
-          label="Building Height"
-          unit="m"
-          value={buildingHeight}
-          onChange={setBuildingHeight}
+          label="Station Height"
+          // unit="m"
+          value={statonHeight}
+          onChange={setStatonHeight}
         />
         <InputRow
-          label="Flow Rate Q"
-          unit="m³/s"
-          value={flowRate}
-          onChange={setFlowRate}
+          label="Flow Rate Q in m3/s"
+          // unit="m³/s"
+          value={flowrateMeter}
+          onChange={setFlowRateMeter}
         />
         <SelectRow
           label="Pipe Material"
@@ -163,7 +162,7 @@ const PlumbingPumpForm = ({ setData }) => {
         />
         <InputRow
           label="Friction Loss Coefficient"
-          unit="m"
+          // unit="m"
           value={frictionLoss}
           onChange={setFrictionLoss}
         />
@@ -174,27 +173,33 @@ const PlumbingPumpForm = ({ setData }) => {
           options={["Select", "100mm", "150mm", "200mm"]}
         />
         <InputRow
-          label="Residual Pressure"
-          unit="Bar"
-          value={residualPressure}
-          onChange={setResidualPressure}
+          label="Residual Head"
+          // unit="Bar"
+          value={residualHead}
+          onChange={setResidualHead}
         />
         <InputRow
-          label="Pressure Loss"
-          unit="Bar"
+          label="Total Pressure Loss"
+          // unit="Bar"
           value={pressureLoss}
           onChange={setPressureLoss}
         />
-        <InputRow
+        {/* <InputRow
           label="Total Head"
           unit="m"
           value={totalHead}
           onChange={setTotalHead}
-        />
-        <InputRow1
+        /> */}
+        <InputRow
           label="Efficiency"
           value={efficiency}
           onChange={setEfficiency}
+        />
+        <InputRow
+          label="Pump Capacity {Watts}"
+          value={pumpCapacity}
+          onChange={setPumpCapacity}
+          // unit="Watts"
         />
       </div>
 

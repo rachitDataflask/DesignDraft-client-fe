@@ -2,18 +2,28 @@ import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 
 // Reusable InputRow without unit
-const InputRow = ({ label, value, onChange }) => (
+const InputRow = ({ label, unit, value, onChange }) => (
   <div className="mb-[14px]">
     <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 hover:border-gray-400"
-    />
+    <div className="flex gap-[8px]">
+      <input
+        type="number"
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className={`${
+          unit ? "w-1/2" : "w-full"
+        } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
+      />
+      {/* 
+      {unit && (
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
+          <option>{unit}</option>
+        </select>
+      )} 
+      */}
+    </div>
   </div>
 );
-
 const SelectRow = ({ label, value, onChange, options }) => (
   <div className="mb-[14px]">
     <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
@@ -32,13 +42,19 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const RWH = ({ setData }) => {
-  const [building, setBuilding] = useState("Metro Station");
+  // const [building, setBuilding] = useState("Metro Station");
 
   const [area, setArea] = useState("3280");
   const [intensity, setIntensity] = useState("109");
   const [runOff, setRunOff] = useState("0.9");
+  const [qMeterPerSecond, setQMeterPerSecond] = useState("0.9");
+  const [qLpm, setQLpm] = useState("0.9");
 
   const [storageTime, setStorageTime] = useState("5");
+  const [harvestPitDepthMeter, setHarvestPitDepthMeter] = useState("5");
+  const [harvestPitDiaMeter, setHarvestPitDiaMeter] = useState("5");
+  const [harvestPitLengthXWidth, setHarvestPitLengthXWidth] = useState("5");
+  const [pipeDiameter, setPipeDiameter] = useState("5");
 
   const handleCalculate = async () => {
     const res = await fetch("/api/rwh_sizing", {
@@ -86,12 +102,12 @@ const RWH = ({ setData }) => {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
+        {/* <SelectRow
           label="Select Building"
           value={building}
           onChange={setBuilding}
           options={["Metro Station", "Mall", "Office"]}
-        />
+        /> */}
         <InputRow label="Roof Area" value={area} onChange={setArea} />
 
         <InputRow
@@ -105,9 +121,36 @@ const RWH = ({ setData }) => {
           onChange={setRunOff}
         />
         <InputRow
+          label="Q Meter Per Second"
+          value={qMeterPerSecond}
+          onChange={setQMeterPerSecond}
+        />
+        <InputRow label="Q LPM" value={qLpm} onChange={setQLpm} />
+
+        <InputRow
           label="Storage Time Minutes"
           value={storageTime}
           onChange={setStorageTime}
+        />
+        <InputRow
+          label="Harvest Pit Depth Meter"
+          value={harvestPitDepthMeter}
+          onChange={setHarvestPitDepthMeter}
+        />
+        <InputRow
+          label="Harvest Pit Dia Meter"
+          value={harvestPitDiaMeter}
+          onChange={setHarvestPitDiaMeter}
+        />
+        <InputRow
+          label="Harvest Pit Length X Width"
+          value={harvestPitLengthXWidth}
+          onChange={setHarvestPitLengthXWidth}
+        />
+        <InputRow
+          label="Pipe Diameter"
+          value={pipeDiameter}
+          onChange={setPipeDiameter}
         />
       </div>
 
