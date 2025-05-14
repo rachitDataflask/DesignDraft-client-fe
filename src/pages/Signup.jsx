@@ -4,13 +4,25 @@ import { Link, useNavigate } from "react-router-dom";
 import BackArrowIcon from "../icons/BackArrowIcon";
 import EyeIcon from "../icons/EyeIcon";
 import EyeCloseIcon from "../icons/EyeCloseIcon";
+import { useSignupMutation } from "../redux/features/api/api";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [signup] = useSignupMutation();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await signup({ email: email, password: password });
+      console.log(response.json());
+    } catch (err) {
+      console.log(err);
+    }
+    navigate("/login");
+  };
   return (
     <div className="flex">
       <div className="w-1/2 h-[100vh] overflow-hidden">
@@ -67,8 +79,11 @@ export default function Signup() {
                   Login
                 </Link>
               </div>
-              <button className="bg-blue-500 text-xl font-bold text-white hover:bg-blue-600 rounded-md p-2 cursor-pointer">
-                Login
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-500 text-xl font-bold text-white hover:bg-blue-600 rounded-md p-2 cursor-pointer"
+              >
+                Signup
               </button>
             </form>
           </div>

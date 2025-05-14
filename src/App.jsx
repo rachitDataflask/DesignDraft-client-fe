@@ -15,10 +15,10 @@ import DesignCalculation from "./components/DesginDraft/DesignCalculation";
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
-      {/* <Route path="/loginpage" element={<LoginPage />} /> */}
       <Route path="/signup" element={<Signup />} />
-      <Route path="/home-dd" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/design-calculation" element={<DesignCalculation />} />
       <Route path="/draft-sidebar" element={<DraftSideBar />} />
 

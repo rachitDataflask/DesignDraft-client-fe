@@ -13,6 +13,7 @@ import ResourceIcon from "../../icons/ResourceIcon";
 import ArrowDown from "../../icons/ArrowDown";
 import HeatIcon from "../../icons/HeatIcon";
 import HomeIcon from "../../icons/HomeIcon";
+import { useSelector } from "react-redux";
 
 // All menu items
 const aiTools = [
@@ -35,6 +36,7 @@ const bottomItems = [
 ];
 
 export default function DraftSideBar() {
+  const user = useSelector((state) => state.user.email);
   return (
     <div className="w-[280px] h-screen fixed top-0 left-0 flex flex-col justify-between bg-white border-r border-[#E5E7EB] font-sans text-[14px]">
       {/* Logo */}
@@ -52,7 +54,7 @@ export default function DraftSideBar() {
       <ul className="flex-1 overflow-y-auto px-[10px] mt-3 scrollbar-hide">
         {/* Home */}
         <NavLink
-          to="/home-dd"
+          to="/home"
           className={({ isActive }) =>
             `flex items-center gap-2.5 px-2.5 py-[10px] rounded-md no-underline ${
               isActive
@@ -172,7 +174,7 @@ export default function DraftSideBar() {
             alt="user"
             className="w-8 h-8 rounded-full bg-gray-300"
           />
-          <span className="text-sm text-gray-800">Atul Kumar Singh</span>
+          <span className="text-sm text-gray-800">{user}</span>
         </div>
         <ArrowDown className="w-4 h-4 text-gray-500" />
       </div>
