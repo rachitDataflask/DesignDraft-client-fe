@@ -28,19 +28,21 @@ const AddProjectModal = ({ onClose }) => {
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-sm text-gray-700 mb-1">Location</label>
-            <input
-              type="text"
-              placeholder="Enter location"
-              className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none bg-gray-200"
-            />
+            <select className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200">
+              <option>Select</option>
+              <option>Delhi</option>
+              <option>Noida</option>
+            </select>
           </div>
 
           <div>
             <label className="block text-sm text-gray-700 mb-1">
-              Buildibg Type
+              Building Type
             </label>
             <select className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200">
               <option>Select</option>
+              <option>X</option>
+              <option>Y</option>
             </select>
           </div>
 
@@ -50,6 +52,8 @@ const AddProjectModal = ({ onClose }) => {
             </label>
             <select className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200">
               <option>Select</option>
+              <option>A</option>
+              <option>B</option>
             </select>
           </div>
 
@@ -59,6 +63,8 @@ const AddProjectModal = ({ onClose }) => {
             </label>
             <select className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200">
               <option>Select</option>
+              <option>M</option>
+              <option>N</option>
             </select>
           </div>
         </div>

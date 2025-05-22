@@ -8,7 +8,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/features/app/userSLice";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [token, setToken] = useState();
@@ -17,18 +18,40 @@ export default function Login() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setUser({ email: email, token: token }));
-  }, [email, token, dispatch]);
+    if (token) {
+      // Save the token to localStorage
+      localStorage.setItem("token", token);
+      // Optionally, set the user in Redux store
+      // dispatch(setUser({ email: email, token: token }));
+      dispatch(setUser({ identifier: identifier, token: token }));
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({ email: email, token: token })
+      // );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ identifier: identifier, token: token })
+      );
+    }
+  }, [identifier, token, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await login({ email: email, password: password });
-      console.log(response.data);
-      setToken(response.data.token);
+      // const response = await login({ email, password });
+      const response = await login({ identifier, password });
+
+      // Check if response has data and token
+      if (response?.data?.token) {
+        console.log(response.data);
+        setToken(response.data.token); // Triggers useEffect to store in localStorage
+      } else {
+        console.error("Login failed or token missing", response);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Login error:", err);
     }
+
     navigate("/home");
   };
 
@@ -50,10 +73,10 @@ export default function Login() {
             <div className="text-4xl font-bold">Login</div>
             <form className="flex flex-col gap-4">
               <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 type="text"
-                placeholder="Email"
+                placeholder="Email or Username"
                 autoComplete="off"
                 className="text-lg w-88 rounded p-2 outline-none bg-neutral-100"
               />

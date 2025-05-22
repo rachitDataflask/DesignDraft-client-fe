@@ -8,6 +8,7 @@ import { useSignupMutation } from "../redux/features/api/api";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +17,12 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await signup({ email: email, password: password });
+      // const response = await signup({ email: email, password: password });
+      const response = await signup({
+        email: email,
+        username: userName,
+        password: password,
+      });
       console.log(response.json());
     } catch (err) {
       console.log(err);
@@ -50,6 +56,17 @@ export default function Signup() {
                 autoComplete="off"
                 className="text-lg w-88 rounded p-2 outline-none bg-neutral-100"
               />
+              <input
+                type="text"
+                value={userName}
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                }}
+                placeholder="Username"
+                autoComplete="off"
+                className="text-lg w-88 rounded p-2 outline-none bg-neutral-100"
+              />
+
               <div className="flex gap-2">
                 <input
                   type={showPassword ? "text" : "Password"}

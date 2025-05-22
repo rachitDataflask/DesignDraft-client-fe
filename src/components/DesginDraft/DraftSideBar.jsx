@@ -3,6 +3,9 @@ import { NavLink } from "react-router-dom";
 import AiIcon from "../../icons/AiIcon";
 import DCIcon from "../../icons/DCIcon";
 import DialuxIcon from "../../icons/DialuxIcon";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser, clearUser } from "../../redux/features/app/userSLice"; // Adjust path if needed
 
 import CadToRevitIcon from "../../icons/CadToRevitIcon";
 import ExtractIcon from "../../icons/ExtractIcon";
@@ -33,10 +36,21 @@ const advancedTools = [
 const bottomItems = [
   { label: "Settings", to: "/settings", icon: SettingIcon },
   { label: "Resources", to: "/resources", icon: ResourceIcon },
+  { label: "Logout", to: "/login", icon: ResourceIcon, logout: true }, // 👈 Added logout flag
 ];
 
 export default function DraftSideBar() {
   const user = useSelector((state) => state.user.email);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(clearUser());
+    navigate("/login");
+  };
+
   return (
     <div className="w-[280px] h-screen fixed top-0 left-0 flex flex-col justify-between bg-white border-r border-[#E5E7EB] font-sans text-[14px]">
       {/* Logo */}
@@ -140,30 +154,41 @@ export default function DraftSideBar() {
         <div className="h-[1px] bg-[#E5E7EB] my-3" />
 
         {/* Bottom Items */}
-        {bottomItems.map(({ label, to, icon: Icon }, idx) => (
-          <NavLink
-            key={idx}
-            to={to}
-            className={({ isActive }) =>
-              `flex items-center gap-2.5 px-2.5 py-[10px] rounded-md no-underline ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-800 hover:bg-gray-100"
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <Icon
-                  className={`w-4 h-4 ${
-                    isActive ? "text-white" : "text-gray-400"
-                  }`}
-                />
-                <span>{label}</span>
-              </>
-            )}
-          </NavLink>
-        ))}
+        {bottomItems.map(({ label, to, icon: Icon, logout }, idx) =>
+          logout ? (
+            <button
+              key={idx}
+              onClick={handleLogout}
+              className="flex items-center gap-2.5 w-full text-left px-2.5 py-[10px] rounded-md text-gray-800 hover:bg-gray-100"
+            >
+              <Icon className="w-4 h-4 text-gray-400" />
+              <span>{label}</span>
+            </button>
+          ) : (
+            <NavLink
+              key={idx}
+              to={to}
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-2.5 py-[10px] rounded-md no-underline ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-800 hover:bg-gray-100"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon
+                    className={`w-4 h-4 ${
+                      isActive ? "text-white" : "text-gray-400"
+                    }`}
+                  />
+                  <span>{label}</span>
+                </>
+              )}
+            </NavLink>
+          )
+        )}
       </ul>
 
       {/* Profile */}
@@ -176,7 +201,6 @@ export default function DraftSideBar() {
           />
           <span className="text-sm text-gray-800">{user}</span>
         </div>
-        <ArrowDown className="w-4 h-4 text-gray-500" />
       </div>
     </div>
   );

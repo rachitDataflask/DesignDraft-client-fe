@@ -30,7 +30,7 @@ const DesignCalculation = () => {
             <img
               src="/src/images/DC.svg"
               alt="No Project"
-              className="w-[320px] object-contain mb-6 opacity-70 mx-auto"
+              className="w-[320px] mix-blend-multiply object-contain mb-6 mx-auto"
             />
             <p className="text-sm text-gray-500">
               No project to show in Design Calculation
