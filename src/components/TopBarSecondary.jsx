@@ -1,15 +1,19 @@
 import BackArrowIcon from "../icons/BackArrowIcon";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React from "react";
 import ElectricalIcon from "../icons/ElectricalIcon";
 import FileSetup from "../icons/FileSetup";
 import FireFightIcon from "../icons/FireFightIcon";
 import HVACICON from "../icons/HVACICON";
 import PlumbingIcon from "../icons/PlumbingIcon";
+import { useGetProjectListQuery } from "../redux/features/api/api";
 
 export default function TopBarSecondary() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { projectId } = useParams();
+  const { data: projects } = useGetProjectListQuery();
+  const project = projects?.find((p) => p._id === projectId);
 
   const tabs = [
     { label: "File Setup", icon: <FileSetup />, path: "/file-setup" },
@@ -23,11 +27,14 @@ export default function TopBarSecondary() {
     <div className="h-[72px] w-full bg-white border-b border-gray-300 flex items-center justify-between px-[24px] ">
       {/* Left Section: Back and Project Name */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 border border-[#D0D5DD] px-3 py-[6px] rounded-md text-[#344054] text- font-medium cursor-pointer hover:bg-[#F9FAFB] transition">
+        <div
+          className="flex items-center gap-2 border border-[#D0D5DD] px-3 py-[6px] rounded-md text-[#344054] text- font-medium cursor-pointer hover:bg-[#F9FAFB] transition"
+          onClick={() => navigate(-1)}
+        >
           <span className="text-lg mr-2 text-black">
             <BackArrowIcon />
           </span>
-          <span>Project Name</span>
+          <span>{project?.name || "Project Name"}</span>
         </div>
       </div>
 

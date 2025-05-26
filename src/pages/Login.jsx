@@ -16,35 +16,30 @@ export default function Login() {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
   const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState({ email: "", username: "" });
 
   useEffect(() => {
     if (token) {
-      // Save the token to localStorage
+      const { email, username, userId } = userInfo; // assuming you set this
       localStorage.setItem("token", token);
-      // Optionally, set the user in Redux store
-      // dispatch(setUser({ email: email, token: token }));
-      dispatch(setUser({ identifier: identifier, token: token }));
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ email: email, token: token })
-      // );
+      dispatch(setUser({ email, username, token, userId }));
       localStorage.setItem(
         "user",
-        JSON.stringify({ identifier: identifier, token: token })
+        JSON.stringify({ email, username, token, userId })
       );
     }
-  }, [identifier, token, dispatch]);
+  }, [token, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const response = await login({ email, password });
       const response = await login({ identifier, password });
 
-      // Check if response has data and token
       if (response?.data?.token) {
-        console.log(response.data);
-        setToken(response.data.token); // Triggers useEffect to store in localStorage
+        const { token, email, username, id, _id } = response.data;
+        const userId = id || _id;
+        setToken(token);
+        setUserInfo({ email, username, userId }); // Save it in a state variable
       } else {
         console.error("Login failed or token missing", response);
       }

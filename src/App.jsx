@@ -7,9 +7,9 @@ import HVACPage from "./pages/HVACPage";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import DraftSideBar from "./components/DesginDraft/DraftSideBar";
-import Home from "./components/DesginDraft/Home";
-import DesignCalculation from "./components/DesginDraft/DesignCalculation";
+import DraftSideBar from "./components/designCalculation/DraftSideBar";
+import Home from "./components/designCalculation/Home";
+import DesignCalculation from "./components/designCalculation/DesignCalculation";
 
 function PrivateRoute({ children }) {
   // Check if the token exists in localStorage
@@ -32,14 +32,70 @@ function App() {
       <Route path="/signup" element={<Signup />} />
 
       {/* Protected routes */}
-      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-      <Route path="/design-calculation" element={<PrivateRoute><DesignCalculation /></PrivateRoute>} />
-      <Route path="/draft-sidebar" element={<PrivateRoute><DraftSideBar /></PrivateRoute>} />
-      <Route path="/file-setup" element={<PrivateRoute><FileSetupPage /></PrivateRoute>} />
-      <Route path="/hvac" element={<PrivateRoute><HVACPage /></PrivateRoute>} />
-      <Route path="/fire-fight" element={<PrivateRoute><FireFightPage /></PrivateRoute>} />
-      <Route path="/electrical" element={<PrivateRoute><ElectricalPage /></PrivateRoute>} />
-      <Route path="/plumbing" element={<PrivateRoute><PlumbingPage /></PrivateRoute>} />
+      <Route
+        path="/home"
+        element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/design-calculation"
+        element={
+          <PrivateRoute>
+            <DesignCalculation />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/file-setup"
+        element={
+          <PrivateRoute>
+            <FileSetupPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/hvac"
+        element={
+          <PrivateRoute>
+            <HVACPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/fire-fight"
+        element={
+          <PrivateRoute>
+            <FireFightPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/electrical"
+        element={
+          <PrivateRoute>
+            <ElectricalPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/plumbing"
+        element={
+          <PrivateRoute>
+            <PlumbingPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/file-setup/:projectId"
+        element={
+          <PrivateRoute>
+            <FileSetupPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

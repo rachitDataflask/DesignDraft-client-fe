@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  name: "",
+  building_type: "",
+  sub_building_type: "",
+  location: "",
+  level: "",
   scale: 0,
   floor: {
     x: 0,
@@ -21,8 +26,11 @@ const projectSlice = createSlice({
     setY: (state, action) => {
       state.floor.y = action.payload;
     },
+    setName: (state, action) => {
+      state.name = action.payload;
+    },
   },
 });
 
-export const { setScale, setX, setY } = projectSlice.actions;
+export const { setScale, setX, setY, setName } = projectSlice.actions;
 export default projectSlice.reducer;

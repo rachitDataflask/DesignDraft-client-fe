@@ -40,7 +40,11 @@ const bottomItems = [
 ];
 
 export default function DraftSideBar() {
-  const user = useSelector((state) => state.user.email);
+  const user = useSelector((state) => state.user);
+
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+  const displayName =
+    user?.username || storedUser?.username || user?.email || storedUser?.email;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -199,7 +203,7 @@ export default function DraftSideBar() {
             alt="user"
             className="w-8 h-8 rounded-full bg-gray-300"
           />
-          <span className="text-sm text-gray-800">{user}</span>
+          <span className="text-sm text-gray-800">{displayName}</span>
         </div>
       </div>
     </div>
