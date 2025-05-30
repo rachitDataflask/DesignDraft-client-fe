@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // NEW
+import { useDispatch } from "react-redux";
+import { resetRooms } from "../../redux/features/app/roomSlice";
 
 import DraftSideBar from "./DraftSideBar";
 import AddProjectModal from "./AddProjectModal";
@@ -24,6 +26,16 @@ const DesignCalculation = () => {
   });
 
   const [deleteProject] = useDeleteProjectMutation();
+
+  const dispatch = useDispatch();
+  dispatch(resetRooms()); // this will clear all room data
+
+  useEffect(() => {
+    localStorage.removeItem("floorPlan");
+    localStorage.removeItem("blocks");
+    localStorage.removeItem("entities");
+    localStorage.removeItem("layers");
+  }, []);
 
   useEffect(() => {
     if (projectAdded) {
@@ -87,7 +99,9 @@ const DesignCalculation = () => {
                       Delete
                     </button>
                     <button
-                      onClick={() => navigate(`/file-setup/${project._id}`)}
+                      onClick={() =>
+                        navigate(`/project/${project._id}/file-setup`)
+                      }
                       className="text-sm font-semibold text-blue-600 bg-blue-100 px-4 py-1 rounded border border-blue-600 hover:bg-blue-200 transition"
                     >
                       Open

@@ -52,7 +52,7 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     signup: builder.mutation({
       query: (newUser) => ({
-        url: "auth/signup",
+        url: "api/auth/signup",
         method: "POST",
         body: newUser,
       }),
@@ -61,7 +61,7 @@ export const apiSlice = createApi({
 
     login: builder.mutation({
       query: (User) => ({
-        url: `auth/login`,
+        url: `api/auth/login`,
         method: "POST",
         body: User,
       }),
@@ -69,10 +69,10 @@ export const apiSlice = createApi({
     }),
 
     addProject: builder.mutation({
-      query: (projectData) => ({
+      query: (formData) => ({
         url: "api/project",
         method: "POST",
-        body: projectData,
+        body: formData,
       }),
       invalidatesTags: ["Project"],
     }),
@@ -92,6 +92,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Project"],
     }),
+
+    getProjectListById: builder.query({
+      query: (id) => ({
+        url: `api/project/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -100,5 +107,6 @@ export const {
   useLoginMutation,
   useAddProjectMutation,
   useGetProjectListQuery,
+  useGetProjectListByIdQuery,
   useDeleteProjectMutation,
 } = apiSlice;

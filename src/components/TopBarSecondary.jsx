@@ -16,11 +16,11 @@ export default function TopBarSecondary() {
   const project = projects?.find((p) => p._id === projectId);
 
   const tabs = [
-    { label: "File Setup", icon: <FileSetup />, path: "/file-setup" },
-    { label: "Electrical", icon: <ElectricalIcon />, path: "/electrical" },
-    { label: "HVAC", icon: <HVACICON />, path: "/hvac" },
-    { label: "Fire Fight", icon: <FireFightIcon />, path: "/fire-fight" },
-    { label: "Plumbing", icon: <PlumbingIcon />, path: "/plumbing" },
+    { label: "File Setup", icon: <FileSetup />, path: "file-setup" },
+    { label: "Electrical", icon: <ElectricalIcon />, path: "electrical" },
+    { label: "HVAC", icon: <HVACICON />, path: "hvac" },
+    { label: "Fire Fight", icon: <FireFightIcon />, path: "fire-fight" },
+    { label: "Plumbing", icon: <PlumbingIcon />, path: "plumbing" },
   ];
 
   return (
@@ -41,12 +41,12 @@ export default function TopBarSecondary() {
       {/* Center Tabs */}
       <div className="flex items-center gap-[32px]">
         {tabs.map((tab, i) => {
-          const isActive = location.pathname === tab.path;
+          const isActive = location.pathname.includes(`/${tab.path}`);
 
           return (
             <div
               key={i}
-              onClick={() => navigate(tab.path)}
+              onClick={() => navigate(`/project/${projectId}/${tab.path}`)}
               className="flex flex-col items-center gap-[2px] cursor-pointer"
             >
               <div className="text-[12px] text-[#667085]">{tab.label}</div>
