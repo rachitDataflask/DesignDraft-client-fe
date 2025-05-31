@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
+import { useAddFireHLMutation } from "../../redux/features/api/api"; // Adjust the path as per your project structure
 
 // Reusable InputRow
 const InputRow = ({ label, unit, value, onChange }) => (
@@ -14,13 +15,6 @@ const InputRow = ({ label, unit, value, onChange }) => (
           unit ? "w-1/2" : "w-full"
         } h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400`}
       />
-      {/* 
-      {unit && (
-        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
-          <option>{unit}</option>
-        </select>
-      )} 
-      */}
     </div>
   </div>
 );
@@ -33,10 +27,10 @@ const InputRow1 = ({ label, unit, value, onChange }) => (
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="flex-1 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200  focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400"
+        className="flex-1 h-[36px] px-3 text-[13px] rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400"
       />
       {unit && (
-        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200  focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
+        <select className="w-1/2 h-[36px] text-[13px] px-2 rounded-[6px] text-[#374151] border border-gray-200 focus:outline-none focus:border-[#0083EE] bg-gray-200 focus:ring-0 hover:border-gray-400">
           <option>{unit}</option>
         </select>
       )}
@@ -44,14 +38,13 @@ const InputRow1 = ({ label, unit, value, onChange }) => (
   </div>
 );
 
-// Reusable SelectRow
 const SelectRow = ({ label, value, onChange, options }) => (
   <div className="mb-[14px]">
     <label className="block text-[11px] text-[#6B7280] mb-[6px]">{label}</label>
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full h-[36px] text-[13px] px-3 rounded-[6px]  text-[#374151] border border-gray-200 bg-gray-200 focus:outline-none focus:border-[#0083EE] focus:ring-0 hover:border-gray-400"
+      className="w-full h-[36px] text-[13px] px-3 rounded-[6px] text-[#374151] border border-gray-200 bg-gray-200 focus:outline-none focus:border-[#0083EE] focus:ring-0 hover:border-gray-400"
     >
       {options.map((opt) => (
         <option key={opt} value={opt}>
@@ -63,12 +56,11 @@ const SelectRow = ({ label, value, onChange, options }) => (
 );
 
 const FireHeadLossForm = ({ setData }) => {
-  // const [building, setBuilding] = useState("Metro Station");
   const [pipeDiameter, setPipeDiameter] = useState("");
   const [pipeMaterial, setPipeMaterial] = useState("");
 
-  const [lengthHorizontal, setLengthHorizontal] = useState("Nos");
-  const [lengthVertical, setLengthVertical] = useState("Nos");
+  const [lengthHorizontal, setLengthHorizontal] = useState("");
+  const [lengthVertical, setLengthVertical] = useState("");
   const [se90, setSe90] = useState(0);
   const [se45, setSe45] = useState(0);
   const [we90, setWe90] = useState(0);
@@ -80,44 +72,40 @@ const FireHeadLossForm = ({ setData }) => {
   const [equivalentLength, setEquivalentLength] = useState(0);
   const [frictionCoeff, setFrictionCoeff] = useState(0);
   const [flowRate, setFlowRate] = useState(0);
-  // const [pressureLossPerMeter, setPressureLossPerMeter] = useState(0);
-  // const [pressureLossTotalLength, setPressureLossTotalLength] = useState(0);
-  // const [pressureLossTotalLengthPerMeter, setPressureLossTotalLengthPerMeter] =
-  //   useState(0);
   const [staticLoss, setStaticLoss] = useState(0);
   const [staticGain, setStaticGain] = useState(0);
-  // const [totalPressureLoss, setTotalPressureLoss] = useState(0);
+
+  const [addFireHL, { isLoading }] = useAddFireHLMutation();
 
   const handleCalculate = async () => {
-    const res = await fetch("/api/fire-headloss", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const requestData = {
+      pipeDia: parseInt(pipeDiameter),
+      pipeMaterial,
+      pipeLengthHorizontal: parseFloat(lengthHorizontal),
+      pipeLengthVertical: parseFloat(lengthVertical),
+      fittings: {
+        SE90: parseInt(se90),
+        SE45: parseInt(se45),
+        WE90: parseInt(we90),
+        GV: parseInt(gv),
+        NRV: parseInt(nrv),
+        BFV: parseInt(bfv),
+        GLV: parseInt(glv),
+        OTHER: parseInt(other),
       },
-      body: JSON.stringify({
-        pipeDia: 100,
-        pipeMaterial: "MS Pipe",
-        pipeLengthHorizontal: 25,
-        pipeLengthVertical: 5,
-        fittings: {
-          SE90: 4,
-          SE45: 4,
-          WE90: 4,
-          GV: 4,
-          NRV: 4,
-          BFV: 4,
-          GLV: 4,
-          OTHER: 4,
-        },
-        frictionalLossCoefficient: 130,
-        flowrateLpm: 600,
-        staticLossMeter: 30,
-        staticGainMeter: 0,
-      }),
-    });
-    const result = await res.json();
-    console.log(result.data);
-    setData(result.data);
+      frictionalLossCoefficient: parseFloat(frictionCoeff),
+      flowrateLpm: parseFloat(flowRate),
+      staticLossMeter: parseFloat(staticLoss),
+      staticGainMeter: parseFloat(staticGain),
+    };
+
+    try {
+      const response = await addFireHL(requestData).unwrap();
+      console.log("Mutation Result:", response.data);
+      setData(response.data);
+    } catch (error) {
+      console.error("Mutation Error:", error);
+    }
   };
 
   return (
@@ -139,13 +127,7 @@ const FireHeadLossForm = ({ setData }) => {
       </div>
 
       {/* Body */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white ">
-        {/* <SelectRow
-          label="Select Building"
-          onChange={setBuilding}
-          options={["Metro Station", "Mall", "Office"]}
-        /> */}
-        {/* {console.log(building)} */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
         <SelectRow
           label="Select Pipe Diameter"
           value={pipeDiameter}
@@ -158,70 +140,26 @@ const FireHeadLossForm = ({ setData }) => {
           onChange={setPipeMaterial}
           options={["GI", "CI", "PVC"]}
         />
-
         <InputRow
           label="Pipe Horizontal Length"
-          // unit="m"
           value={lengthHorizontal}
           onChange={setLengthHorizontal}
         />
         <InputRow
           label="Pipe Vertical Length"
-          // unit="m"
           value={lengthVertical}
           onChange={setLengthVertical}
         />
-        <InputRow
-          label="SE 90°"
-          //  unit="Nos"
-          value={se90}
-          onChange={setSe90}
-        />
-        <InputRow
-          label="SE 45°"
-          // unit="Nos"
-          value={se45}
-          onChange={setSe45}
-        />
-        <InputRow
-          label="WE 90°"
-          // unit="Nos"
-          value={we90}
-          onChange={setWe90}
-        />
-        <InputRow
-          label="GV"
-          // unit="Nos"
-          value={gv}
-          onChange={setGv}
-        />
-        <InputRow
-          label="NRV"
-          // unit="Nos"
-          value={nrv}
-          onChange={setNrv}
-        />
-        <InputRow
-          label="BFV"
-          //  unit="Nos"
-          value={bfv}
-          onChange={setBfv}
-        />
-        <InputRow
-          label="GLV"
-          // unit="Nos"
-          value={glv}
-          onChange={setGlv}
-        />
-        <InputRow
-          label="OTHER"
-          // unit="Nos"
-          value={other}
-          onChange={setOther}
-        />
+        <InputRow label="SE 90°" value={se90} onChange={setSe90} />
+        <InputRow label="SE 45°" value={se45} onChange={setSe45} />
+        <InputRow label="WE 90°" value={we90} onChange={setWe90} />
+        <InputRow label="GV" value={gv} onChange={setGv} />
+        <InputRow label="NRV" value={nrv} onChange={setNrv} />
+        <InputRow label="BFV" value={bfv} onChange={setBfv} />
+        <InputRow label="GLV" value={glv} onChange={setGlv} />
+        <InputRow label="OTHER" value={other} onChange={setOther} />
         <InputRow
           label="Equivalent Length of Pipes & Fittings"
-          // unit="m"
           value={equivalentLength}
           onChange={setEquivalentLength}
         />
@@ -230,48 +168,17 @@ const FireHeadLossForm = ({ setData }) => {
           value={frictionCoeff}
           onChange={setFrictionCoeff}
         />
-        <InputRow
-          label="Flow rate Q"
-          // unit="m³/s"
-          value={flowRate}
-          onChange={setFlowRate}
-        />
-        {/* <InputRow
-          label="Pressure Loss Per Meter Length of Pipe"
-          unit="Bar"
-          value={pressureLossPerMeter}
-          onChange={setPressureLossPerMeter}
-        /> */}
-        {/* <InputRow
-          label="Pressure loss of total length of pipe"
-          unit="Bar"
-          value={pressureLossTotalLength}
-          onChange={setPressureLossTotalLength}
-        /> */}
-        {/* <InputRow
-          label="Pressure loss of total length of pipe Per Meter"
-          unit="m"
-          value={pressureLossTotalLengthPerMeter}
-          onChange={setPressureLossTotalLengthPerMeter}
-        /> */}
+        <InputRow label="Flow rate Q" value={flowRate} onChange={setFlowRate} />
         <InputRow
           label="Static Loss"
-          // unit="m"
           value={staticLoss}
           onChange={setStaticLoss}
         />
         <InputRow
           label="Static Gain"
-          // unit="m"
           value={staticGain}
           onChange={setStaticGain}
         />
-        {/* <InputRow
-          label="Total Pressure Loss"
-          unit="Bar"
-          value={totalPressureLoss}
-          onChange={setTotalPressureLoss}
-        /> */}
       </div>
 
       {/* Bottom Button */}
@@ -279,8 +186,9 @@ const FireHeadLossForm = ({ setData }) => {
         <button
           className="w-full h-[40px] bg-[#2E90FA] hover:bg-[#1C78DC] text-white text-[14px] font-semibold rounded-md transition"
           onClick={handleCalculate}
+          disabled={isLoading}
         >
-          Calculate
+          {isLoading ? "Calculating..." : "Calculate"}
         </button>
       </div>
     </div>
