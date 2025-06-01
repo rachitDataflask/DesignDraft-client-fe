@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 import { jwtDecode } from "jwt-decode";
+import UploadIcon from "../../icons/UploadIcon";
+import DWG_upload from "../../images/DWG_upload.svg";
 
 import {
   useAddProjectMutation,
@@ -9,6 +11,7 @@ import {
 
 const AddProjectModal = ({ onClose, setProjectAdded }) => {
   const [addProject] = useAddProjectMutation();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const token = localStorage.getItem("token");
   // const userId = token ? jwtDecode(token)?.user?.id : null;
@@ -29,6 +32,7 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
     building_type: "",
     sub_building_type: "",
     level: "",
+    dxf_file: "",
   });
 
   const handleChange = (e) => {
@@ -36,16 +40,63 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.name.endsWith(".dxf")) {
+      setSelectedFile(file);
+    }
+    // else {
+    //   alert("Please upload a .dxf file");
+    // }
+  };
+
+  // const handleAddProject = async () => {
+  //   if (!selectedFile) {
+  //     alert("Please upload a .dxf file");
+  //     return;
+  //   }
+
+  //   const form = new FormData();
+  //   for (const key in formData) {
+  //     form.append(key, formData[key]);
+  //   }
+  //   form.append("file", selectedFile);
+
+  //   try {
+  //     // Optional: validate inputs before calling mutation
+  //     const response = await addProject(formData).unwrap();
+  //     console.log("Project added:", response);
+  //     // const { data: projects, isLoading, isError } = useGetProjectListQuery();
+  //     setProjectAdded(true);
+  //     onClose(); // Close modal after successful submission
+  //   } catch (error) {
+  //     console.error("Error adding project:", error);
+  //   }
+  // };
+
   const handleAddProject = async () => {
+    // if (!selectedFile) {
+    //   alert("Please upload a .dxf file");
+    //   return;
+    // }
+
+    const form = new FormData();
+    form.append("user", formData.user);
+    form.append("name", formData.name);
+    form.append("location", formData.location);
+    form.append("building_type", formData.building_type);
+    form.append("sub_building_type", formData.sub_building_type);
+    form.append("level", formData.level);
+    form.append("dxf_file", selectedFile); // ✅ name must match `upload.single("dxf_file")` on backend
+
     try {
-      // Optional: validate inputs before calling mutation
-      const response = await addProject(formData).unwrap();
+      const response = await addProject(form).unwrap();
       console.log("Project added:", response);
-      // const { data: projects, isLoading, isError } = useGetProjectListQuery();
       setProjectAdded(true);
-      onClose(); // Close modal after successful submission
+      onClose();
     } catch (error) {
       console.error("Error adding project:", error);
+      alert("Failed to add project. Please try again.");
     }
   };
 
@@ -139,6 +190,30 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
               <option value="N">N</option>
             </select>
           </div>
+        </div>
+        <div>
+          <label className=" text-gray-700 mb-1">
+            <div className=" ">Project Files</div>
+            <div className="relative cursor-pointer">
+              <div className="flex justify-between mt-6 mb-6 border border-gray-300 p-2 text-l bg-gray-200 rounded-md">
+                <div className="flex items-center gap-2">
+                  <img src={DWG_upload} alt="Upload Icon" className="h-5 w-5" />
+                  <span>
+                    {selectedFile ? selectedFile.name : "Upload Plan (.dxf)"}
+                  </span>
+                </div>
+                <div className="text-white p-2 rounded">
+                  <UploadIcon />
+                </div>
+              </div>
+              <input
+                type="file"
+                accept=".dxf"
+                onChange={handleFileChange}
+                className="absolute inset-0 opacity-0 cursor-pointer"
+              />
+            </div>
+          </label>
         </div>
       </div>
     </div>

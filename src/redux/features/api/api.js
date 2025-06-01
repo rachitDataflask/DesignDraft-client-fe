@@ -52,7 +52,7 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     signup: builder.mutation({
       query: (newUser) => ({
-        url: "auth/signup",
+        url: "api/auth/signup",
         method: "POST",
         body: newUser,
       }),
@@ -61,7 +61,7 @@ export const apiSlice = createApi({
 
     login: builder.mutation({
       query: (User) => ({
-        url: `auth/login`,
+        url: `api/auth/login`,
         method: "POST",
         body: User,
       }),
@@ -69,10 +69,10 @@ export const apiSlice = createApi({
     }),
 
     addProject: builder.mutation({
-      query: (projectData) => ({
+      query: (formData) => ({
         url: "api/project",
         method: "POST",
-        body: projectData,
+        body: formData,
       }),
       invalidatesTags: ["Project"],
     }),
@@ -92,6 +92,93 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Project"],
     }),
+
+    getProjectListById: builder.query({
+      query: (id) => ({
+        url: `api/project/${id}`,
+        method: "GET",
+      }),
+    }),
+    addFireHL: builder.mutation({
+      query: (body) => ({
+        url: `api/fireheadloss`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["FireHeadLoss"],
+    }),
+    addFirePump: builder.mutation({
+      query: (body) => ({
+        url: `api/firepump`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Firepump"],
+    }),
+    addHeatLoad: builder.mutation({
+      query: (body) => ({
+        url: `api/heatload`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["HeatLoad"],
+    }),
+    addVentilation: builder.mutation({
+      query: (body) => ({
+        url: `api/ventilation`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Ventilation"],
+    }),
+    addWaterDemand: builder.mutation({
+      query: (body) => ({
+        url: `api/waterdemand`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["WaterDemand"],
+    }),
+    addWaterSupplyPipes: builder.mutation({
+      query: (body) => ({
+        url: `api/watersupplypipes`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["WaterSupplyPipes"],
+    }),
+    addDrainagePipes: builder.mutation({
+      query: (body) => ({
+        url: `api/drainagepipes`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["DrainagePipes"],
+    }),
+    addPlumbingPump: builder.mutation({
+      query: (body) => ({
+        url: `api/plumbingpump`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["PlumbingPump"],
+    }),
+    addRwhSizing: builder.mutation({
+      query: (body) => ({
+        url: `api/rwhsizing`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["RWHSizing"],
+    }),
+    addRainwaterDropSizing: builder.mutation({
+      query: (body) => ({
+        url: `api/rainwaterdropsizing`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["RainwaterDropSizing"],
+    }),
   }),
 });
 
@@ -100,5 +187,16 @@ export const {
   useLoginMutation,
   useAddProjectMutation,
   useGetProjectListQuery,
+  useGetProjectListByIdQuery,
   useDeleteProjectMutation,
+  useAddFireHLMutation,
+  useAddFirePumpMutation,
+  useAddHeatLoadMutation,
+  useAddVentilationMutation,
+  useAddWaterDemandMutation,
+  useAddWaterSupplyPipesMutation,
+  useAddDrainagePipesMutation,
+  useAddPlumbingPumpMutation,
+  useAddRwhSizingMutation,
+  useAddRainwaterDropSizingMutation,
 } = apiSlice;

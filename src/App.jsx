@@ -96,6 +96,54 @@ function App() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/electrical/:projectId"
+        element={
+          <PrivateRoute>
+            <ElectricalPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/file-setup"
+        element={
+          <PrivateRoute>
+            <FileSetupPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="project/:projectId/electrical"
+        element={
+          <PrivateRoute>
+            <ElectricalPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/hvac"
+        element={
+          <PrivateRoute>
+            <HVACPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/fire-fight"
+        element={
+          <PrivateRoute>
+            <FireFightPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/project/:projectId/plumbing"
+        element={
+          <PrivateRoute>
+            <PlumbingPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

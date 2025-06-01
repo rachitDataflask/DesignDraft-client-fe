@@ -4,13 +4,15 @@ import React, { useState } from "react";
 
 import Layout from "../components/ProjectLayout";
 
-import HeatLoad from "../components/HVAC/HeatLoad";
+import HeatLoad from "../components/hvac/HeatLoad";
 import Ventilation from "../components/HVAC/Ventilation";
 import DuctSizing from "../components/HVAC/DuctSizing";
 import SidebarHVAC from "../components/HVAC/SidebarHVAC";
+import HeatLoadRightModal from "../components/hvac/HeatLoadRightModal";
 
 export default function HVACPage() {
   const [activeSection, setActiveSection] = useState("heat-load"); // Default
+  const [data, setData] = useState();
 
   const renderContent = () => {
     switch (activeSection) {
@@ -35,6 +37,14 @@ export default function HVACPage() {
           setActiveSection={setActiveSection}
         />
         <div className="flex-1 p-4 overflow-y-auto">{renderContent()}</div>
+        {data && (
+          <RightModal>
+            {activeSection === "heat-load" && (
+              <HeatLoadRightModal data={data} />
+            )}
+            {activeSection === "fire-pump" && <FirePumpPageModal data={data} />}
+          </RightModal>
+        )}
       </div>
     </div>
   );

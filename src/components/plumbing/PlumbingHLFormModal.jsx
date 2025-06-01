@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 
-export default function FireHLFormModal({ data }) {
+export default function WaterDemandModal({ data }) {
   const handleDownload = () => {
     const doc = new jsPDF();
 
@@ -11,53 +11,64 @@ export default function FireHLFormModal({ data }) {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
     doc.setTextColor(255, 255, 255);
-    doc.text("Plumbing - Head Loss Report", 10, 23);
+    doc.text("Plumbing - Water Demand Report", 10, 23);
 
     doc.setTextColor(0, 0, 0);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(16);
-    doc.text("Total Water Requirement(RAW):", 10, 40);
+    doc.text("Raw Water:", 10, 40);
 
     doc.setFontSize(12);
-    doc.text(`${data.raw_water_requirement.total_water_requirement}`, 10, 48);
+    doc.text(`${data[0].total_raw_water}`, 10, 48);
 
     doc.setTextColor(0, 0, 0);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(16);
-    doc.text("Total Water Requirement(TREATED):", 10, 60);
+    doc.text("Treated Water:", 10, 60);
 
     doc.setFontSize(12);
-    doc.text(`${data.treated_water_requirement.total_water_requirement}`, 10, 68);
+    doc.text(`${data[0].total_treated_water}`, 10, 68);
 
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(16);
+    doc.text("Soft Water:", 10, 80);
 
+    doc.setFontSize(12);
+    doc.text(`${data[0].ug_tank_halfday_treated}`, 10, 88);
 
     // Save the PDF
-    doc.save("Plumbing(HL).pdf");
+    doc.save("Plumbing(Water Demand).pdf");
   };
   return (
     <div className="px-6">
       <div className="py-4">
-        <div className="text-lg font-bold border-b border-gray-300 text-gray-800">
-          Water Required Info
+        <div className="text-lg font-bold border-b border-gray-300 p-6 text-gray-800">
+          Required Water
         </div>
-        <div className="flex flex-col gap-4 py-8">
+        <div className="flex flex-col gap-4 py-8 px-4">
           <div className="flex flex-col gap-2">
-            <div className="font-semibold text-gray-600 text-sm">
-                Total Water Requirement(RAW)
-            </div>
+            <div className="font-semibold text-gray-600 text-sm">Raw Water</div>
             <div className="border border-gray-300 p-2 rounded bg-gray-100">
-              {data.raw_water_requirement.total_water_requirement}
+              {data[0].total_raw_water}
             </div>
           </div>
           <div className="flex-col gap">
             <div className="font-semibold text-gray-600 text-sm">
-            Total Water Requirement(TREATED)
+              Treated Water
             </div>
             <div className="border border-gray-300 p-2 rounded bg-gray-100">
-              {data.treated_water_requirement.total_water_requirement}
+              {data[0].total_treated_water}
             </div>
           </div>
-          
+          <div className="flex-col">
+            <div className="font-semibold text-gray-600 text-sm">
+              Soft Water
+            </div>
+            <div className="border border-gray-300 p-2 rounded bg-gray-100">
+              {data[0].ug_tank_halfday_treated}
+            </div>
+          </div>
         </div>
       </div>
       <div
