@@ -7,9 +7,11 @@ import HVACPage from "./pages/HVACPage";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import DraftSideBar from "./components/designCalculation/DraftSideBar";
+import DraftSideBar from "./components/shared/DraftSideBar";
 import Home from "./components/designCalculation/Home";
 import DesignCalculation from "./components/designCalculation/DesignCalculation";
+import ExtractQuantity from "./components/extractQuantity/ExtractQuantity";
+import QuantityExtraction from "./components/extractQuantity/QuantityExtraction";
 
 function PrivateRoute({ children }) {
   // Check if the token exists in localStorage
@@ -48,8 +50,40 @@ function App() {
           </PrivateRoute>
         }
       />
+       <Route
+        path="/extract-quantity"
+        element={
+          <PrivateRoute>
+            <ExtractQuantity />
+          </PrivateRoute>
+        }
+      />
+       <Route
+        path="/quantity-extraction"
+        element={
+          <PrivateRoute>
+            <QuantityExtraction />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/quantity-extraction/:projectId"
+        element={
+          <PrivateRoute>
+            <QuantityExtraction />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/file-setup"
+        element={
+          <PrivateRoute>
+            <FileSetupPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/file-setup/:projectId"
         element={
           <PrivateRoute>
             <FileSetupPage />
@@ -88,14 +122,7 @@ function App() {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/file-setup/:projectId"
-        element={
-          <PrivateRoute>
-            <FileSetupPage />
-          </PrivateRoute>
-        }
-      />
+      
     </Routes>
   );
 }

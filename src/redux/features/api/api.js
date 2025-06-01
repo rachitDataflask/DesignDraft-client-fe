@@ -52,7 +52,7 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     signup: builder.mutation({
       query: (newUser) => ({
-        url: "auth/signup",
+        url: "api/auth/signup",
         method: "POST",
         body: newUser,
       }),
@@ -61,7 +61,7 @@ export const apiSlice = createApi({
 
     login: builder.mutation({
       query: (User) => ({
-        url: `auth/login`,
+        url: `api/auth/login`,
         method: "POST",
         body: User,
       }),
@@ -77,6 +77,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Project"],
     }),
 
+
     getProjectList: builder.query({
       query: (id) => ({
         url: "api/project",
@@ -91,7 +92,38 @@ export const apiSlice = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["Project"],
+    }), 
+
+     addQE: builder.mutation({
+      query: (data) => ({
+        url: "api/qe",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["QE"],
     }),
+     getQEList: builder.query({
+      query: (id) => ({
+        url: "api/qe",
+        method: "GET",
+      }),
+      providesTags: ["QE"],
+    }),
+     deleteQE: builder.mutation({
+      query: (id) => ({
+        url: `api/qe/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["QE"],
+    }), 
+    getQEListById: builder.query({
+      query:(id) => ({
+        url:`api/qe/${id}`,
+        method:"GET",
+        providesTags: (result, error, id) => [{ type: 'QE', id }],
+      })
+    })
+
   }),
 });
 
@@ -101,4 +133,8 @@ export const {
   useAddProjectMutation,
   useGetProjectListQuery,
   useDeleteProjectMutation,
+  useAddQEMutation,
+  useGetQEListQuery,
+  useDeleteQEMutation,
+  useGetQEListByIdQuery,
 } = apiSlice;

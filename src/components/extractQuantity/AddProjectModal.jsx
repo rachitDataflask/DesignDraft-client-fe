@@ -1,17 +1,15 @@
+
 import React, { useState } from "react";
-
 import { jwtDecode } from "jwt-decode";
-
 import {
-  useAddProjectMutation,
-  useGetProjectListQuery,
+  
+  useAddQEMutation,
 } from "../../redux/features/api/api";
 
 const AddProjectModal = ({ onClose, setProjectAdded }) => {
-  const [addProject] = useAddProjectMutation();
+  const [addProject] = useAddQEMutation();
 
   const token = localStorage.getItem("token");
-  // const userId = token ? jwtDecode(token)?.user?.id : null;
   let userId = "";
   try {
     if (token) {
@@ -25,25 +23,36 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
   const [formData, setFormData] = useState({
     user: userId,
     name: "",
-    location: "",
+    service: "",
     building_type: "",
-    sub_building_type: "",
     level: "",
   });
+
+  const [dxfFile, setDxfFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e) => {
+    setDxfFile(e.target.files[0]);
+  };
+
   const handleAddProject = async () => {
     try {
-      // Optional: validate inputs before calling mutation
-      const response = await addProject(formData).unwrap();
+      const data = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        data.append(key, value);
+      });
+      if (dxfFile) {
+        data.append("dxf_file", dxfFile); // Change key name based on your backend
+      }
+
+      const response = await addProject(data).unwrap();
       console.log("Project added:", response);
-      // const { data: projects, isLoading, isError } = useGetProjectListQuery();
       setProjectAdded(true);
-      onClose(); // Close modal after successful submission
+      onClose();
     } catch (error) {
       console.error("Error adding project:", error);
     }
@@ -81,23 +90,23 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Location</label>
+            <label className="block text-sm text-gray-700 mb-1">Service</label>
             <select
-              name="location"
-              value={formData.location}
+              name="service"
+              value={formData.service}
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200"
             >
               <option value="">Select</option>
-              <option value="Delhi">Delhi</option>
-              <option value="Noida">Noida</option>
+              <option value="HVAC">HVAC</option>
+              <option value="Electrical">Electrical</option>
+              <option value="FIRE FIGHTING">FIRE FIGHTING</option>
+              <option value="PLUMBING">PLUMBING</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
-              Building Type
-            </label>
+            <label className="block text-sm text-gray-700 mb-1">Building Type</label>
             <select
               name="building_type"
               value={formData.building_type}
@@ -110,21 +119,7 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">
-              Sub building type
-            </label>
-            <select
-              name="sub_building_type"
-              value={formData.sub_building_type}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200"
-            >
-              <option value="">Select</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-            </select>
-          </div>
+          
 
           <div>
             <label className="block text-sm text-gray-700 mb-1">Level</label>
@@ -140,6 +135,26 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
             </select>
           </div>
         </div>
+
+        {/* DXF File Upload Field */}
+        <div className="mb-4">
+  <label className="block text-sm text-gray-700 mb-1">Upload DXF File</label>
+  <div className="relative">
+    <div className="flex items-center gap-2 border border-gray-300 rounded-md bg-gray-100 px-3 py-2">
+      <span className="text-blue-600 text-lg">📄</span>
+      <span className="text-sm text-gray-700 truncate">
+        {dxfFile ? dxfFile.name : "Upload DXF"}
+      </span>
+    </div>
+    <input
+      type="file"
+      accept=".dxf"
+      onChange={handleFileChange}
+      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+    />
+  </div>
+</div>
+
       </div>
     </div>
   );

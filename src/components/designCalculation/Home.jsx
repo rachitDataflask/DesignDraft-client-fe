@@ -1,4 +1,4 @@
-import DraftSideBar from "./DraftSideBar";
+import DraftSideBar from "../shared/DraftSideBar";
 
 function Home() {
   return (

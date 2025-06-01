@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // NEW
+import { useLocation, useNavigate } from "react-router-dom";
 
-import DraftSideBar from "../shared/DraftSideBar";
 import AddProjectModal from "./AddProjectModal";
 import {
-  useGetProjectListQuery,
-  useDeleteProjectMutation,
+  useGetQEListQuery,
+  useDeleteQEMutation,
 } from "../../redux/features/api/api";
+import DraftSideBar from "../shared/DraftSideBar";
 
-const DesignCalculation = () => {
-  const location = useLocation(); // NEW
+const ExtractQuantity = () => {
+  const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
@@ -19,38 +19,37 @@ const DesignCalculation = () => {
     isLoading,
     isError,
     refetch,
-  } = useGetProjectListQuery(undefined, {
-    refetchOnFocus: true, // Automatically refetch when tab/window regains focus
+  } = useGetQEListQuery(undefined, {
+    refetchOnFocus: true,
   });
 
-  const [deleteProject] = useDeleteProjectMutation();
+  const [deleteProject] = useDeleteQEMutation();
 
   useEffect(() => {
     if (projectAdded) {
-      refetch(); // manually trigger re-fetch
-      setProjectAdded(false); // reset flag
+      refetch();
+      setProjectAdded(false);
     }
   }, [projectAdded, refetch]);
 
   const handleDelete = async (id) => {
     try {
       await deleteProject(id).unwrap();
-      refetch(); // Refresh the list
+      refetch();
     } catch (error) {
       console.error("Failed to delete project:", error);
     }
   };
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+   <div className="flex h-screen bg-white overflow-hidden">
       {/* Sidebar */}
       <div className="w-[280px] border-r border-gray-200 bg-white">
         <DraftSideBar />
       </div>
 
-      {/* Right Main Content */}
+      {/* Main */}
       <div className="flex-1 bg-[#f7f7f7] relative overflow-y-auto">
-        {/* Add New Button */}
         <div className="absolute top-6 right-6 z-10">
           <button
             onClick={() => setShowModal(true)}
@@ -59,8 +58,6 @@ const DesignCalculation = () => {
             Add New
           </button>
         </div>
-
-        {/* Main Content */}
         <div className="px-8 pt-20 pb-8">
           {isLoading ? (
             <p className="text-center text-gray-500">Loading projects...</p>
@@ -77,7 +74,6 @@ const DesignCalculation = () => {
                     <h3 className="text-lg font-medium text-gray-800">
                       {project.name}
                     </h3>
-                    {/* <p className="text-sm text-gray-500">{project.location}</p> */}
                   </div>
                   <div className="space-x-2">
                     <button
@@ -87,7 +83,9 @@ const DesignCalculation = () => {
                       Delete
                     </button>
                     <button
-                      onClick={() => navigate(`/file-setup/${project._id}`)}
+                      onClick={() =>
+                        navigate(`/quantity-extraction/${project._id}`)
+                      }
                       className="text-sm font-semibold text-blue-600 bg-blue-100 px-4 py-1 rounded border border-blue-600 hover:bg-blue-200 transition"
                     >
                       Open
@@ -104,13 +102,11 @@ const DesignCalculation = () => {
                 className="w-[320px] mix-blend-multiply object-contain mb-6 mx-auto"
               />
               <p className="text-sm text-gray-500">
-                No project to show in Design Calculation
+                No project to show in Extract Quantity
               </p>
             </div>
           )}
         </div>
-
-        {/* Modal */}
         {showModal && (
           <AddProjectModal
             onClose={() => setShowModal(false)}
@@ -122,4 +118,4 @@ const DesignCalculation = () => {
   );
 };
 
-export default DesignCalculation;
+export default ExtractQuantity;
