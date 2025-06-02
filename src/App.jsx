@@ -10,6 +10,10 @@ import Signup from "./pages/Signup";
 import DraftSideBar from "./components/designCalculation/DraftSideBar";
 import Home from "./components/designCalculation/Home";
 import DesignCalculation from "./components/designCalculation/DesignCalculation";
+import QuantityExtraction from "./components/extractQuantity/QuantityExtraction";
+import ExtractQuantity from "./components/extractQuantity/ExtractQuantity";
+
+
 
 function PrivateRoute({ children }) {
   // Check if the token exists in localStorage
@@ -45,6 +49,30 @@ function App() {
         element={
           <PrivateRoute>
             <DesignCalculation />
+          </PrivateRoute>
+        }
+      />
+             <Route
+        path="/extract-quantity"
+        element={
+          <PrivateRoute>
+            <ExtractQuantity />
+          </PrivateRoute>
+        }
+      />
+             <Route
+        path="/quantity-extraction"
+        element={
+          <PrivateRoute>
+            <QuantityExtraction />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/quantity-extraction/:projectId"
+        element={
+          <PrivateRoute>
+            <QuantityExtraction />
           </PrivateRoute>
         }
       />

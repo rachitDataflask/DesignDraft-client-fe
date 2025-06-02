@@ -4,11 +4,11 @@ import React, { useState } from "react";
 
 import Layout from "../components/ProjectLayout";
 
-import HeatLoad from "../components/hvac/HeatLoad";
+import HeatLoad from "../components/HVAC/HeatLoad";
 import Ventilation from "../components/HVAC/Ventilation";
 import DuctSizing from "../components/HVAC/DuctSizing";
 import SidebarHVAC from "../components/HVAC/SidebarHVAC";
-import HeatLoadRightModal from "../components/hvac/HeatLoadRightModal";
+import HeatLoadRightModal from "../components/HVAC/HeatLoadRightModal";
 
 export default function HVACPage() {
   const [activeSection, setActiveSection] = useState("heat-load"); // Default

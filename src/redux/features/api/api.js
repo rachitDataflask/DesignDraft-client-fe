@@ -49,6 +49,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  
   endpoints: (builder) => ({
     signup: builder.mutation({
       query: (newUser) => ({
@@ -179,6 +180,35 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["RainwaterDropSizing"],
     }),
+         addQE: builder.mutation({
+      query: (data) => ({
+        url: "api/qe",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["QE"],
+    }),
+     getQEList: builder.query({
+      query: (id) => ({
+        url: "api/qe",
+        method: "GET",
+      }),
+      providesTags: ["QE"],
+    }),
+     deleteQE: builder.mutation({
+      query: (id) => ({
+        url: `api/qe/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["QE"],
+    }), 
+    getQEListById: builder.query({
+      query:(id) => ({
+        url:`api/qe/${id}`,
+        method:"GET",
+        providesTags: (result, error, id) => [{ type: 'QE', id }],
+      })
+    })
   }),
 });
 
@@ -199,4 +229,8 @@ export const {
   useAddPlumbingPumpMutation,
   useAddRwhSizingMutation,
   useAddRainwaterDropSizingMutation,
+    useAddQEMutation,
+  useGetQEListQuery,
+  useDeleteQEMutation,
+  useGetQEListByIdQuery,
 } = apiSlice;
