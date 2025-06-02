@@ -346,7 +346,7 @@ const EntityRenderer = ({ entities = [], blocks = {}, layers = {} }) => {
   };
 
   return (
-    <Stage width={1000} height={600}>
+    <Stage width={1300} height={700}>
       <Layer
         scaleX={scale}
         scaleY={scale} // Flip Y axis

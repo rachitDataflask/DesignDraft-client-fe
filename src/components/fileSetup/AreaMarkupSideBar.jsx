@@ -185,7 +185,7 @@ const AreaMarkupSidebar = () => {
   };
 
   return (
-    <div className="w-[340px] rounded-[12px] bg-white p-[16px] border border-gray-200 text-sm font-medium shadow-sm relative">
+    <div className="w-[340px] h-full rounded-[12px] bg-white p-[16px] border border-gray-200 text-sm font-medium shadow-sm relative">
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>

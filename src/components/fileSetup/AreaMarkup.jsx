@@ -61,7 +61,7 @@ const AreaMarkup = () => {
         <AreaMarkupSidebar />
       </div>
 
-      <div style={{ position: "relative", width: 1000, height: 600 }}>
+      <div style={{ position: "relative", width: 1300, height: 700 }}>
         {hasEntities ? (
           <>
             <EntityRenderer

@@ -179,8 +179,10 @@ const RoomEditor = () => {
   return (
     <>
       <Stage
-        width={window.innerWidth - 500}
-        height={window.innerHeight - 110}
+        // width={window.innerWidth - 500}
+        // height={window.innerHeight - 110}
+        width={1300}
+        height={700}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

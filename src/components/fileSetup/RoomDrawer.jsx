@@ -181,8 +181,8 @@ import { useDispatch, useSelector } from "react-redux";
 import CentralModal from "./CentralModal";
 import { addRoom } from "../../redux/features/app/roomSlice"; // ✅ adjust path if needed
 
-const CANVAS_WIDTH = 1000;
-const CANVAS_HEIGHT = 600;
+const CANVAS_WIDTH = 1300;
+const CANVAS_HEIGHT = 700;
 
 const RoomDrawer = () => {
   const [rooms, setRooms] = useState([]);

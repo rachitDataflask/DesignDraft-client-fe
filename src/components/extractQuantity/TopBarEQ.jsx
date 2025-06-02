@@ -3,14 +3,14 @@ import React from "react";
 
 import ExtractIcon from "../../icons/ExtractIcon";
 import BackArrowIcon from "../../icons/BackArrowIcon";
-import { useGetProjectListQuery } from "../../redux/features/api/api";
+import { useGetQEListQuery } from "../../redux/features/api/api";
 
 export default function TopBarEQ() {
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId } = useParams();
-  const { data: projects } = useGetProjectListQuery();
-  const project = projects?.find((p) => p._id === projectId);
+  const { data: qeprojects } = useGetQEListQuery();
+  const project = qeprojects?.find((p) => p._id === projectId);
 
   const fileSetupTab = {
     label: "Extract Quantity",
