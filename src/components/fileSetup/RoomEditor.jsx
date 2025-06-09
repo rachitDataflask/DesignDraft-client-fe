@@ -6,27 +6,26 @@ import EntityRenderer from "../../drawing/EntityRender";
 import { useParams } from "react-router-dom";
 import { useGetProjectListByIdQuery } from "../../redux/features/api/api";
 import CentralModal from "./CentralModal";
-import { addRoom, updateRoomName } from "../../redux/features/app/roomSlice";
+import {
+  addRoom,
+  updateRoomPosition,
+} from "../../redux/features/app/roomSlice";
 
 const RoomEditor = () => {
   const [floorPlan, setFloorPlan] = useState(null);
-  const [rooms, setRooms] = useState([]);
   const [newRoom, setNewRoom] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
 
-  const reduxRooms = useSelector((state) => state.rooms);
-
-  console.log(reduxRooms);
+  const rooms = useSelector((state) => state.rooms);
+  const dispatch = useDispatch();
 
   const draggingRoomId = useRef(null);
   const initialRoomPosition = useRef(null);
 
-  const dispatch = useDispatch();
-
   const { projectId } = useParams();
-  const { data, isLoading, isError } = useGetProjectListByIdQuery(projectId);
+  const { data } = useGetProjectListByIdQuery(projectId);
 
   const entities = data?.dxf_entities || [];
   const blocks = data?.dxf_blocks || {};
@@ -34,10 +33,7 @@ const RoomEditor = () => {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("floorPlan"));
-    if (data) {
-      console.log("Floor Area:", data.width * data.height);
-      setFloorPlan(data);
-    }
+    if (data) setFloorPlan(data);
   }, []);
 
   const isInsideFloor = (x, y) => {
@@ -111,16 +107,10 @@ const RoomEditor = () => {
       return;
     }
 
-    console.log(`Room ${finalRoom.id} Area: ${finalRoom.area}`);
-    setRooms([...rooms, finalRoom]);
-
-    // Dispatch only id and area as per slice requirement
-    dispatch(addRoom({ id: finalRoom.id, area: finalRoom.area }));
-
+    dispatch(addRoom(finalRoom));
     setNewRoom(null);
     setIsDrawing(false);
-
-    setSelectedRoom(finalRoom);
+    setSelectedRoomId(finalRoom.id);
     setIsModalOpen(true);
   };
 
@@ -144,7 +134,6 @@ const RoomEditor = () => {
       y: newY,
     };
 
-    // Check floor bounds
     const withinFloor =
       updatedRoom.x >= floorPlan.x &&
       updatedRoom.y >= floorPlan.y &&
@@ -156,7 +145,6 @@ const RoomEditor = () => {
       return;
     }
 
-    // Check overlap with other rooms
     const overlapping = rooms.some(
       (room) => room.id !== id && isOverlapping(updatedRoom, room)
     );
@@ -166,12 +154,7 @@ const RoomEditor = () => {
       return;
     }
 
-    // If all good, update the room
-    setRooms(
-      rooms.map((room) =>
-        room.id === id ? { ...room, x: newX, y: newY } : room
-      )
-    );
+    dispatch(updateRoomPosition({ id, x: newX, y: newY }));
   };
 
   if (!floorPlan) return <div>Loading floor plan...</div>;
@@ -179,10 +162,8 @@ const RoomEditor = () => {
   return (
     <>
       <Stage
-        // width={window.innerWidth - 500}
-        // height={window.innerHeight - 110}
-        width={1300}
-        height={700}
+        width={window.innerWidth - 500}
+        height={window.innerHeight - 110}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -219,9 +200,9 @@ const RoomEditor = () => {
         </Layer>
       </Stage>
 
-      {isModalOpen && selectedRoom && reduxRooms.length > 0 && (
+      {isModalOpen && selectedRoomId && (
         <CentralModal
-          room={reduxRooms.find((r) => r.id === selectedRoom.id)}
+          room={rooms.find((r) => r.id === selectedRoomId)}
           onClose={() => setIsModalOpen(false)}
         />
       )}

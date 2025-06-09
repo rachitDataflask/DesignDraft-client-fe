@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // NEW
 import { useDispatch } from "react-redux";
 import { resetRooms } from "../../redux/features/app/roomSlice";
+import { resetFloorPlan } from "../../redux/features/app/FloorPlanSlice";
 
 import DraftSideBar from "./DraftSideBar";
 import AddProjectModal from "./AddProjectModal";
@@ -29,6 +30,7 @@ const DesignCalculation = () => {
 
   const dispatch = useDispatch();
   dispatch(resetRooms()); // this will clear all room data
+  dispatch(resetFloorPlan());
 
   useEffect(() => {
     localStorage.removeItem("floorPlan");

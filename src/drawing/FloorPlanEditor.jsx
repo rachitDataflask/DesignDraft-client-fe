@@ -167,9 +167,9 @@ const FloorPlanEditor = () => {
   const navigate = useNavigate();
 
   // Reset floor plan on component mount
-  useEffect(() => {
-    dispatch(resetFloorPlan());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(resetFloorPlan());
+  // }, []);
 
   useEffect(() => {
     if (rectRef.current && transformerRef.current) {

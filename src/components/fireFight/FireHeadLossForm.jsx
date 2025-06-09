@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 import { useAddFireHLMutation } from "../../redux/features/api/api"; // Adjust the path as per your project structure
+import FloorPreview from "../shared/FloorPreview";
 
 // Reusable InputRow
 const InputRow = ({ label, unit, value, onChange }) => (
@@ -109,87 +110,97 @@ const FireHeadLossForm = ({ setData }) => {
   };
 
   return (
-    <div className="w-[340px] flex flex-col bg-white border border-[#E5E7EB] rounded-[10px] overflow-hidden relative">
-      {/* Header */}
-      <div className="flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
-        <div>
-          <h2 className="text-[14px] font-semibold text-[#111827] leading-none">
-            Head Loss Calculation
-          </h2>
-          <p className="text-[11px] text-[#9CA3AF] mt-[4px]">No update yet</p>
+    <div className="flex h-screen">
+      <div className="w-[340px] flex flex-col bg-white border border-[#E5E7EB] rounded-[10px] overflow-hidden relative">
+        {/* Header */}
+        <div className="flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
+          <div>
+            <h2 className="text-[14px] font-semibold text-[#111827] leading-none">
+              Head Loss Calculation
+            </h2>
+            <p className="text-[11px] text-[#9CA3AF] mt-[4px]">No update yet</p>
+          </div>
+          <button
+            className="w-[24px] h-[24px] bg-[#0083EE] text-white rounded-md flex items-center justify-center hover:bg-[#1C78DC] transition"
+            onClick={() => console.log("Reload clicked")}
+          >
+            <ReloadIcon className="w-[16px] h-[16px] stroke-white" />
+          </button>
         </div>
-        <button
-          className="w-[24px] h-[24px] bg-[#0083EE] text-white rounded-md flex items-center justify-center hover:bg-[#1C78DC] transition"
-          onClick={() => console.log("Reload clicked")}
-        >
-          <ReloadIcon className="w-[16px] h-[16px] stroke-white" />
-        </button>
-      </div>
 
-      {/* Body */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
-        <SelectRow
-          label="Select Pipe Diameter"
-          value={pipeDiameter}
-          onChange={setPipeDiameter}
-          options={["100mm", "150mm", "200mm"]}
-        />
-        <SelectRow
-          label="Select Pipe Material"
-          value={pipeMaterial}
-          onChange={setPipeMaterial}
-          options={["GI", "CI", "PVC"]}
-        />
-        <InputRow
-          label="Pipe Horizontal Length"
-          value={lengthHorizontal}
-          onChange={setLengthHorizontal}
-        />
-        <InputRow
-          label="Pipe Vertical Length"
-          value={lengthVertical}
-          onChange={setLengthVertical}
-        />
-        <InputRow label="SE 90°" value={se90} onChange={setSe90} />
-        <InputRow label="SE 45°" value={se45} onChange={setSe45} />
-        <InputRow label="WE 90°" value={we90} onChange={setWe90} />
-        <InputRow label="GV" value={gv} onChange={setGv} />
-        <InputRow label="NRV" value={nrv} onChange={setNrv} />
-        <InputRow label="BFV" value={bfv} onChange={setBfv} />
-        <InputRow label="GLV" value={glv} onChange={setGlv} />
-        <InputRow label="OTHER" value={other} onChange={setOther} />
-        <InputRow
-          label="Equivalent Length of Pipes & Fittings"
-          value={equivalentLength}
-          onChange={setEquivalentLength}
-        />
-        <InputRow1
-          label="Frictional Loss Coefficient C"
-          value={frictionCoeff}
-          onChange={setFrictionCoeff}
-        />
-        <InputRow label="Flow rate Q" value={flowRate} onChange={setFlowRate} />
-        <InputRow
-          label="Static Loss"
-          value={staticLoss}
-          onChange={setStaticLoss}
-        />
-        <InputRow
-          label="Static Gain"
-          value={staticGain}
-          onChange={setStaticGain}
-        />
-      </div>
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white">
+          <SelectRow
+            label="Select Pipe Diameter"
+            value={pipeDiameter}
+            onChange={setPipeDiameter}
+            options={["100mm", "150mm", "200mm"]}
+          />
+          <SelectRow
+            label="Select Pipe Material"
+            value={pipeMaterial}
+            onChange={setPipeMaterial}
+            options={["GI", "CI", "PVC"]}
+          />
+          <InputRow
+            label="Pipe Horizontal Length"
+            value={lengthHorizontal}
+            onChange={setLengthHorizontal}
+          />
+          <InputRow
+            label="Pipe Vertical Length"
+            value={lengthVertical}
+            onChange={setLengthVertical}
+          />
+          <InputRow label="SE 90°" value={se90} onChange={setSe90} />
+          <InputRow label="SE 45°" value={se45} onChange={setSe45} />
+          <InputRow label="WE 90°" value={we90} onChange={setWe90} />
+          <InputRow label="GV" value={gv} onChange={setGv} />
+          <InputRow label="NRV" value={nrv} onChange={setNrv} />
+          <InputRow label="BFV" value={bfv} onChange={setBfv} />
+          <InputRow label="GLV" value={glv} onChange={setGlv} />
+          <InputRow label="OTHER" value={other} onChange={setOther} />
+          <InputRow
+            label="Equivalent Length of Pipes & Fittings"
+            value={equivalentLength}
+            onChange={setEquivalentLength}
+          />
+          <InputRow1
+            label="Frictional Loss Coefficient C"
+            value={frictionCoeff}
+            onChange={setFrictionCoeff}
+          />
+          <InputRow
+            label="Flow rate Q"
+            value={flowRate}
+            onChange={setFlowRate}
+          />
+          <InputRow
+            label="Static Loss"
+            value={staticLoss}
+            onChange={setStaticLoss}
+          />
+          <InputRow
+            label="Static Gain"
+            value={staticGain}
+            onChange={setStaticGain}
+          />
+        </div>
 
-      {/* Bottom Button */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#E5E7EB] px-4 py-4">
-        <button
-          className="w-full h-[40px] bg-[#2E90FA] hover:bg-[#1C78DC] text-white text-[14px] font-semibold rounded-md transition"
-          onClick={handleCalculate}
-          disabled={isLoading}
-        >
-          {isLoading ? "Calculating..." : "Calculate"}
-        </button>
+        {/* Bottom Button */}
+        <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#E5E7EB] px-4 py-4">
+          <button
+            className="w-full h-[40px] bg-[#2E90FA] hover:bg-[#1C78DC] text-white text-[14px] font-semibold rounded-md transition"
+            onClick={handleCalculate}
+            disabled={isLoading}
+          >
+            {isLoading ? "Calculating..." : "Calculate"}
+          </button>
+        </div>
+      </div>
+      {/* Right: Floor Preview */}
+      <div className="flex-1 h-full">
+        <FloorPreview />
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 // import React, { useState, useRef } from "react";
 // import { Stage, Layer, Rect } from "react-konva";
 // import { v4 as uuidv4 } from "uuid";
+// import { useDispatch, useSelector } from "react-redux";
 // import CentralModal from "./CentralModal";
+// import { addRoom } from "../../redux/features/app/roomSlice"; // ✅ adjust path if needed
 
-// const CANVAS_WIDTH = 1000;
-// const CANVAS_HEIGHT = 600;
+// const CANVAS_WIDTH = 1300;
+// const CANVAS_HEIGHT = 700;
 
 // const RoomDrawer = () => {
 //   const [rooms, setRooms] = useState([]);
@@ -12,6 +14,9 @@
 //   const [isDrawing, setIsDrawing] = useState(false);
 //   const [isModalOpen, setIsModalOpen] = useState(false);
 //   const [selectedRoom, setSelectedRoom] = useState(null);
+
+//   const dispatch = useDispatch();
+//   const reduxRooms = useSelector((state) => state.rooms); // ✅ Redux state
 
 //   const draggingRoomId = useRef(null);
 //   const initialRoomPosition = useRef(null);
@@ -77,6 +82,10 @@
 
 //     console.log(`Room ${finalRoom.id} Area: ${finalRoom.area}`);
 //     setRooms([...rooms, finalRoom]);
+
+//     // ✅ Dispatch to Redux
+//     dispatch(addRoom({ id: finalRoom.id, area: finalRoom.area }));
+
 //     setNewRoom(null);
 //     setIsDrawing(false);
 
@@ -162,9 +171,10 @@
 //           )}
 //         </Layer>
 //       </Stage>
-//       {isModalOpen && (
+
+//       {isModalOpen && selectedRoom && reduxRooms.length > 0 && (
 //         <CentralModal
-//           room={selectedRoom}
+//           room={reduxRooms.find((r) => r.id === selectedRoom.id)}
 //           onClose={() => setIsModalOpen(false)}
 //         />
 //       )}
@@ -179,36 +189,34 @@ import { Stage, Layer, Rect } from "react-konva";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import CentralModal from "./CentralModal";
-import { addRoom } from "../../redux/features/app/roomSlice"; // ✅ adjust path if needed
+import {
+  addRoom,
+  updateRoomPosition,
+} from "../../redux/features/app/roomSlice"; // ✅
 
 const CANVAS_WIDTH = 1300;
 const CANVAS_HEIGHT = 700;
 
 const RoomDrawer = () => {
-  const [rooms, setRooms] = useState([]);
   const [newRoom, setNewRoom] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
 
   const dispatch = useDispatch();
-  const reduxRooms = useSelector((state) => state.rooms); // ✅ Redux state
+  const reduxRooms = useSelector((state) => state.rooms); // ✅ Persisted rooms
 
   const draggingRoomId = useRef(null);
   const initialRoomPosition = useRef(null);
 
-  const isInsideCanvas = (x, y) => {
-    return x >= 0 && x <= CANVAS_WIDTH && y >= 0 && y <= CANVAS_HEIGHT;
-  };
+  const isInsideCanvas = (x, y) =>
+    x >= 0 && x <= CANVAS_WIDTH && y >= 0 && y <= CANVAS_HEIGHT;
 
-  const isOverlapping = (a, b) => {
-    return (
-      a.x < b.x + b.width &&
-      a.x + a.width > b.x &&
-      a.y < b.y + b.height &&
-      a.y + a.height > b.y
-    );
-  };
+  const isOverlapping = (a, b) =>
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y;
 
   const handleMouseDown = (e) => {
     if (isDrawing) return;
@@ -233,7 +241,6 @@ const RoomDrawer = () => {
 
     const width = Math.abs(newRoom.width);
     const height = Math.abs(newRoom.height);
-
     if (width === 0 || height === 0) {
       setNewRoom(null);
       setIsDrawing(false);
@@ -249,24 +256,19 @@ const RoomDrawer = () => {
       area: width * height,
     };
 
-    const overlaps = rooms.some((room) => isOverlapping(finalRoom, room));
+    const overlaps = reduxRooms.some((r) => isOverlapping(finalRoom, r));
     if (overlaps) {
       setNewRoom(null);
       setIsDrawing(false);
       return;
     }
 
-    console.log(`Room ${finalRoom.id} Area: ${finalRoom.area}`);
-    setRooms([...rooms, finalRoom]);
-
-    // ✅ Dispatch to Redux
-    dispatch(addRoom({ id: finalRoom.id, area: finalRoom.area }));
+    dispatch(addRoom(finalRoom)); // ✅ save full room data to Redux
+    setSelectedRoom(finalRoom);
+    setIsModalOpen(true);
 
     setNewRoom(null);
     setIsDrawing(false);
-
-    setSelectedRoom(finalRoom);
-    setIsModalOpen(true);
   };
 
   const handleDragStart = (id, e) => {
@@ -279,28 +281,24 @@ const RoomDrawer = () => {
     const newX = shape.x();
     const newY = shape.y();
 
-    const draggedRoom = rooms.find((r) => r.id === id);
+    const draggedRoom = reduxRooms.find((r) => r.id === id);
     if (!draggedRoom) return;
 
-    const updatedRoom = {
-      ...draggedRoom,
-      x: newX,
-      y: newY,
-    };
+    const updatedRoom = { ...draggedRoom, x: newX, y: newY };
 
-    const withinCanvas =
+    const withinBounds =
       updatedRoom.x >= 0 &&
       updatedRoom.y >= 0 &&
       updatedRoom.x + updatedRoom.width <= CANVAS_WIDTH &&
       updatedRoom.y + updatedRoom.height <= CANVAS_HEIGHT;
 
-    if (!withinCanvas) {
+    if (!withinBounds) {
       shape.position(initialRoomPosition.current);
       return;
     }
 
-    const overlapping = rooms.some(
-      (room) => room.id !== id && isOverlapping(updatedRoom, room)
+    const overlapping = reduxRooms.some(
+      (r) => r.id !== id && isOverlapping(updatedRoom, r)
     );
 
     if (overlapping) {
@@ -308,11 +306,7 @@ const RoomDrawer = () => {
       return;
     }
 
-    setRooms(
-      rooms.map((room) =>
-        room.id === id ? { ...room, x: newX, y: newY } : room
-      )
-    );
+    dispatch(updateRoomPosition({ id, x: newX, y: newY })); // ✅ update position in Redux
   };
 
   return (
@@ -326,7 +320,7 @@ const RoomDrawer = () => {
         style={{ position: "absolute", top: 0, left: 0, zIndex: 10 }}
       >
         <Layer>
-          {rooms.map((room) => (
+          {reduxRooms.map((room) => (
             <Rect
               key={room.id}
               {...room}
@@ -348,7 +342,7 @@ const RoomDrawer = () => {
         </Layer>
       </Stage>
 
-      {isModalOpen && selectedRoom && reduxRooms.length > 0 && (
+      {isModalOpen && selectedRoom && (
         <CentralModal
           room={reduxRooms.find((r) => r.id === selectedRoom.id)}
           onClose={() => setIsModalOpen(false)}
