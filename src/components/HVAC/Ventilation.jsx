@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 import { useAddVentilationMutation } from "../../redux/features/api/api"; // <-- update path as needed
 import FloorPreview from "../shared/FloorPreview";
@@ -20,6 +21,9 @@ const VentilationForm = () => {
     fanUnit: "Nos",
     model: "",
   });
+
+  const rooms = useSelector((state) => state.rooms);
+  console.log(rooms);
 
   const [addVentilation, { isLoading, isSuccess, isError, error }] =
     useAddVentilationMutation();

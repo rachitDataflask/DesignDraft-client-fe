@@ -168,7 +168,7 @@ const AreaMarkupSidebar = () => {
   const [height, setHeight] = useState("30");
   const [unit, setUnit] = useState("Unit");
 
-  const rooms = useSelector((state) => state.rooms); // Make sure your redux slice is named correctly
+  const rooms = useSelector((state) => state.rooms);
 
   // State for modal
   const [selectedRoom, setSelectedRoom] = useState(null);

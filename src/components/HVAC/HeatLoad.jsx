@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 import { useAddHeatLoadMutation } from "../../redux/features/api/api"; // Update with your actual API path
 import FloorPreview from "../shared/FloorPreview";
@@ -34,17 +35,48 @@ const HeatLoad = () => {
   const [summerConditionsOpen, setSummerConditionsOpen] = useState(false);
   const [monsoonConditionsOpen, setMonsoonConditionsOpen] = useState(false);
 
+  const rooms = useSelector((state) => state.rooms);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // If user selects a room
+    if (name === "room") {
+      const selectedRoom = rooms.find(
+        (room) => room.name === value || room.id === value
+      );
+
+      if (selectedRoom) {
+        setFormData((prev) => ({
+          ...prev,
+          room: value,
+          area: selectedRoom.area || "",
+          height: selectedRoom.height || "",
+        }));
+        return; // Exit early since we already set the state
+      }
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleCalculate = async () => {
     try {
-      // Prepare payload with numeric conversions
+      // Find the selected room in the Redux store
+      const selectedRoom = rooms.find(
+        (room) => room.name === formData.room || room.id === formData.room
+      );
+
+      // Use the area/height from the room if available
       const payload = {
         ...formData,
-        area: formData.area ? Number(formData.area) : 0,
-        height: formData.height ? Number(formData.height) : 0,
+        area: selectedRoom?.area ?? (formData.area ? Number(formData.area) : 0),
+        height:
+          selectedRoom?.height ??
+          (formData.height ? Number(formData.height) : 0),
         occupancy: formData.occupancy ? Number(formData.occupancy) : 0,
         lightLoad: formData.lightLoad ? Number(formData.lightLoad) : 0,
         heatDissipation: formData.heatDissipation
@@ -64,10 +96,10 @@ const HeatLoad = () => {
 
       const result = await addHeatLoad(payload).unwrap();
       console.log("API Response:", result);
-      // Handle successful response here (e.g., show success message)
+      // success handling
     } catch (error) {
       console.error("API Error:", error);
-      // Handle error here (e.g., show error message)
+      // error handling
     }
   };
 
@@ -107,36 +139,44 @@ const HeatLoad = () => {
               <div className="space-y-[14px]">
                 {/* Section 1 */}
                 <div className="border border-gray-200 rounded-[10px] p-[12px] bg-white space-y-[12px]">
-                  <div className="space-y-[6px]">
-                    <label className="text-[#444] block">Room</label>
-                    <select
-                      name="room"
-                      value={formData.room}
-                      onChange={handleChange}
-                      className="w-full p-2 rounded-[8px]  text-[13px] bg-gray-200"
-                    >
-                      <option value="">Select Room</option>
-                      <option value="Room 1">Room 1</option>
-                      <option value="Room 2">Room 2</option>
-                    </select>
-                  </div>
+                  <label className="text-[#444] block">Room</label>
+                  <select
+                    name="room"
+                    value={formData.room}
+                    onChange={handleChange}
+                    className="w-full p-2 rounded-[8px] text-[13px] bg-gray-200"
+                  >
+                    <option value="">Select a Room</option>
+                    {rooms.map((room, index) => (
+                      <option key={room.id || index} value={room.name}>
+                        {room.name || `Room ${room.id || index + 1}`}
+                      </option>
+                    ))}
+                  </select>
 
+                  {/* AREA FIELD */}
                   <div className="space-y-[6px]">
                     <label className="text-[#444] block">Area</label>
                     <div className="flex gap-2">
-                      <input
-                        type="number"
-                        name="area"
-                        value={formData.area}
-                        onChange={handleChange}
-                        placeholder="Area"
-                        className="w-2/3 p-2 rounded-[8px]  text-[13px] bg-gray-200"
-                      />
+                      {formData.room ? (
+                        <div className="w-2/3 p-2 rounded-[8px] text-[13px] bg-gray-200">
+                          {formData.area}
+                        </div>
+                      ) : (
+                        <div
+                          type="number"
+                          name="area"
+                          value={formData.area}
+                          onChange={handleChange}
+                          placeholder="Area"
+                          className="w-2/3 p-2 rounded-[8px] text-[13px] bg-gray-200"
+                        />
+                      )}
                       <select
                         name="areaUnit"
                         value={formData.areaUnit}
                         onChange={handleChange}
-                        className="w-1/3 p-2 rounded-[8px]  text-[13px] bg-gray-200"
+                        className="w-1/3 p-2 rounded-[8px] text-[13px] bg-gray-200"
                       >
                         <option>Sq. m.</option>
                         <option>Sq. ft.</option>
@@ -144,22 +184,29 @@ const HeatLoad = () => {
                     </div>
                   </div>
 
+                  {/* HEIGHT FIELD */}
                   <div className="space-y-[6px]">
                     <label className="text-[#444] block">Height</label>
                     <div className="flex gap-2">
-                      <input
-                        type="number"
-                        name="height"
-                        value={formData.height}
-                        onChange={handleChange}
-                        placeholder="Height"
-                        className="w-2/3 p-2 rounded-[8px]  text-[13px] bg-gray-200"
-                      />
+                      {formData.room ? (
+                        <div className="w-2/3 p-2 rounded-[8px] text-[13px] bg-gray-200">
+                          {formData.height}
+                        </div>
+                      ) : (
+                        <div
+                          type="number"
+                          name="height"
+                          value={formData.height}
+                          onChange={handleChange}
+                          placeholder="Height"
+                          className="w-2/3 p-2 rounded-[8px] text-[13px] bg-gray-200"
+                        />
+                      )}
                       <select
                         name="heightUnit"
                         value={formData.heightUnit}
                         onChange={handleChange}
-                        className="w-1/3 p-2 rounded-[8px]  text-[13px] bg-gray-200"
+                        className="w-1/3 p-2 rounded-[8px] text-[13px] bg-gray-200"
                       >
                         <option>m</option>
                         <option>ft</option>

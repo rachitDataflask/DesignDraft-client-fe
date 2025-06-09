@@ -33,8 +33,8 @@ const rootReducer = combineReducers({
   floorPlan: floorPlanReducer,
   areaMarkup: areaMarkupReducer,
   dxf: dxfReducer,
-  [apiSlice.reducerPath]: apiSlice.reducer,
   rooms: roomReducer, // this key must match the whitelist
+  [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
