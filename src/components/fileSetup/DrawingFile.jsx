@@ -17,11 +17,11 @@ const DrawingFile = () => {
   if (isError) return <div>Error loading project.</div>;
 
   return (
-    <div className="flex gap-2">
-      <div>
+    <div className="flex h-screen">
+      <div className="w-[340px] h-[92vh] border-r border-gray-300">
         <DrawingFileSideBar />
       </div>
-      <div>
+      <div className="flex-1 h-full">
         {entities.length > 0 ? (
           <EntityRenderer entities={entities} blocks={blocks} layers={layers} />
         ) : (

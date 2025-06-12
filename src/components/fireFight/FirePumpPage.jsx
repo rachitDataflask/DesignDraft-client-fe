@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
 import { useAddFirePumpMutation } from "../../redux/features/api/api"; // Update with correct import path
+import FloorPreview from "../shared/FloorPreview";
 
 const InputRow = ({ label, unit, value, onChange }) => (
   <div className="mb-[14px]">
@@ -79,99 +80,105 @@ const FirePumpPage = ({ setData }) => {
   };
 
   return (
-    <div className="w-[340px] h-full flex flex-col bg-white border border-[#E5E7EB] rounded-lg overflow-hidden relative">
-      {/* Header */}
-      <div className="flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
-        <div>
-          <h2 className="text-[14px] font-semibold text-[#111827] leading-none">
-            Fire Pump Sizing
-          </h2>
-          <p className="text-[11px] text-[#9CA3AF] mt-[4px]">
-            Enter pump details
-          </p>
+    <div className="flex h-screen">
+      <div className="w-[340px] h-[92vh] flex flex-col bg-white border border-[#E5E7EB] overflow-hidden relative">
+        {/* Header */}
+        <div className="flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
+          <div>
+            <h2 className="text-[14px] font-semibold text-[#111827] leading-none">
+              Fire Pump Sizing
+            </h2>
+            <p className="text-[11px] text-[#9CA3AF] mt-[4px]">
+              Enter pump details
+            </p>
+          </div>
+          <button
+            className="w-[24px] h-[24px] bg-[#0083EE] text-white rounded-md flex items-center justify-center hover:bg-[#1C78DC] transition"
+            onClick={() => console.log("Reload clicked")}
+          >
+            <ReloadIcon className="w-[16px] h-[16px] stroke-white" />
+          </button>
         </div>
-        <button
-          className="w-[24px] h-[24px] bg-[#0083EE] text-white rounded-md flex items-center justify-center hover:bg-[#1C78DC] transition"
-          onClick={() => console.log("Reload clicked")}
-        >
-          <ReloadIcon className="w-[16px] h-[16px] stroke-white" />
-        </button>
-      </div>
 
-      {/* Scrollable Body */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white overflow-hidden">
-        <InputRow
-          label="Station Area"
-          value={stationArea}
-          onChange={setStationArea}
-        />
-        <InputRow
-          label="Total PD Area"
-          value={totalPdArea}
-          onChange={setTotalPdArea}
-        />
-        <InputRow
-          label="Station Height"
-          value={stationHeight}
-          onChange={setStationHeight}
-        />
-        <InputRow
-          label="Flow Rate Through Pipe Q (m3/s)"
-          value={flowrateMeter}
-          onChange={setFlowrateMeter}
-        />
-        <SelectRow
-          label="Pipe Material"
-          value={pipeMaterial}
-          onChange={setPipeMaterial}
-          options={["GI", "CI", "PVC"]}
-        />
-        <InputRow
-          label="Frictional Loss Coefficient"
-          value={frictionalLossCoefficient}
-          onChange={setFrictionalLossCoefficient}
-        />
-        <InputRow
-          label="Pipe Diameter"
-          value={pipeDiameter}
-          onChange={setPipeDiameter}
-        />
-        <InputRow
-          label="Residual Head"
-          value={residualHead}
-          onChange={setResidualHead}
-        />
-        <InputRow
-          label="Total Pressure Loss"
-          value={totalPressureLoss}
-          onChange={setTotalPressureLoss}
-        />
-        <InputRow
-          label="Total Head"
-          value={totalHead}
-          onChange={setTotalHead}
-        />
-        <InputRow
-          label="Efficiency"
-          value={efficiency}
-          onChange={setEfficiency}
-        />
-        <InputRow
-          label="Pump Capacity"
-          value={pumpCapacity}
-          onChange={setPumpCapacity}
-        />
-      </div>
+        {/* Scrollable Body */}
+        <div className="flex-1 overflow-y-auto px-4 py-4 pb-[80px] bg-white overflow-hidden">
+          <InputRow
+            label="Station Area"
+            value={stationArea}
+            onChange={setStationArea}
+          />
+          <InputRow
+            label="Total PD Area"
+            value={totalPdArea}
+            onChange={setTotalPdArea}
+          />
+          <InputRow
+            label="Station Height"
+            value={stationHeight}
+            onChange={setStationHeight}
+          />
+          <InputRow
+            label="Flow Rate Through Pipe Q (m3/s)"
+            value={flowrateMeter}
+            onChange={setFlowrateMeter}
+          />
+          <SelectRow
+            label="Pipe Material"
+            value={pipeMaterial}
+            onChange={setPipeMaterial}
+            options={["GI", "CI", "PVC"]}
+          />
+          <InputRow
+            label="Frictional Loss Coefficient"
+            value={frictionalLossCoefficient}
+            onChange={setFrictionalLossCoefficient}
+          />
+          <InputRow
+            label="Pipe Diameter"
+            value={pipeDiameter}
+            onChange={setPipeDiameter}
+          />
+          <InputRow
+            label="Residual Head"
+            value={residualHead}
+            onChange={setResidualHead}
+          />
+          <InputRow
+            label="Total Pressure Loss"
+            value={totalPressureLoss}
+            onChange={setTotalPressureLoss}
+          />
+          <InputRow
+            label="Total Head"
+            value={totalHead}
+            onChange={setTotalHead}
+          />
+          <InputRow
+            label="Efficiency"
+            value={efficiency}
+            onChange={setEfficiency}
+          />
+          <InputRow
+            label="Pump Capacity"
+            value={pumpCapacity}
+            onChange={setPumpCapacity}
+          />
+        </div>
 
-      {/* Fixed Bottom Button */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#E5E7EB] px-4 py-4">
-        <button
-          className="w-full h-[40px] bg-[#2E90FA] hover:bg-[#1C78DC] text-white text-[14px] font-semibold rounded-md transition"
-          onClick={handleCalculate}
-          disabled={isLoading}
-        >
-          {isLoading ? "Calculating..." : "Calculate"}
-        </button>
+        {/* Fixed Bottom Button */}
+        <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#E5E7EB] px-4 py-4">
+          <button
+            className="w-full h-[40px] bg-[#2E90FA] hover:bg-[#1C78DC] text-white text-[14px] font-semibold rounded-md transition"
+            onClick={handleCalculate}
+            disabled={isLoading}
+          >
+            {isLoading ? "Calculating..." : "Calculate"}
+          </button>
+        </div>
+      </div>
+      {/* Right: Floor Preview */}
+      <div className="flex-1 h-full">
+        <FloorPreview />
       </div>
     </div>
   );

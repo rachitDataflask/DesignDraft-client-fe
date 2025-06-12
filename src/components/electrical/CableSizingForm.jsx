@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ReloadIcon } from "../../icons/ReloadIcon";
+import FloorPreview from "../shared/FloorPreview";
 
 // Reusable select component
 const FormSelect = ({ label, name, value, onChange, options }) => (
@@ -92,132 +93,138 @@ const CableSizingForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-[340px] h-[85vh] bg-white border border-gray-300 rounded-md pt-0 p-2 font-sans text-[13px] text-[#4B5563] overflow-auto"
-    >
-      {/* Fixed Header */}
-      <div className="sticky top-0 z-10 bg-white flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
-        <div>
-          <h1 className="text-[14px] font-semibold text-black leading-none">
-            Cable Sizing
-          </h1>
-          <p className="text-[11px] text-gray-400 mt-[2px]">No update yet</p>
-        </div>
-        <button className="w-[24px] h-[24px] bg-[#0083EE] text-white rounded-md flex items-center justify-center hover:bg-[#1C78DC] transition">
-          <ReloadIcon className="w-[16px] h-[16px] stroke-white" />
-        </button>
-      </div>
-      <div className="border-b border-gray-200 mb-3"></div>
-
-      {/* Dropdowns */}
-      <FormSelect
-        label="Select Building"
-        name="building"
-        value={formData.building}
-        onChange={handleChange}
-        options={["Residential Tower"]}
-      />
-      <FormSelect
-        label="Select Panel"
-        name="panel"
-        value={formData.panel}
-        onChange={handleChange}
-        options={["MDB"]}
-      />
-      <FormSelect
-        label="Select Connected Equipments"
-        name="equipment"
-        value={formData.equipment}
-        onChange={handleChange}
-        options={["ACDB"]}
-      />
-      <FormSelect
-        label="Cable Type"
-        name="cableType"
-        value={formData.cableType}
-        onChange={handleChange}
-        options={["XLPE"]}
-      />
-
-      {/* Input + unit fields */}
-      <FormInputWithUnit
-        label="Cable Length"
-        name="cableLength"
-        value={formData.cableLength}
-        unitName="cableLengthUnit"
-        unitValue={formData.cableLengthUnit}
-        onChange={handleChange}
-        unitOptions={["m"]}
-      />
-      <FormInputWithUnit
-        label="Number of Core"
-        name="numCore"
-        value={formData.numCore}
-        unitName="numCoreUnit"
-        unitValue={formData.numCoreUnit}
-        onChange={handleChange}
-        unitOptions={["Core"]}
-      />
-      <FormInputWithUnit
-        label="Cable Size"
-        name="cableSize"
-        value={formData.cableSize}
-        unitName="cableSizeUnit"
-        unitValue={formData.cableSizeUnit}
-        onChange={handleChange}
-        unitOptions={["mm"]}
-      />
-      <FormInputWithUnit
-        label="Connected Load"
-        name="connectedLoad"
-        value={formData.connectedLoad}
-        unitName="connectedLoadUnit"
-        unitValue={formData.connectedLoadUnit}
-        onChange={handleChange}
-        unitOptions={["KW"]}
-      />
-      <FormInputWithUnit
-        label="Voltage Drop"
-        name="voltageDrop"
-        value={formData.voltageDrop}
-        unitName="voltageDropUnit"
-        unitValue={formData.voltageDropUnit}
-        onChange={handleChange}
-        unitOptions={["V"]}
-      />
-
-      {/* Final 3 selects */}
-      <FormSelect
-        label="Breaker Size"
-        name="breakerSize"
-        value={formData.breakerSize}
-        onChange={handleChange}
-        options={[formData.breakerSize]}
-      />
-      <FormSelect
-        label="Power Factor"
-        name="powerFactor"
-        value={formData.powerFactor}
-        onChange={handleChange}
-        options={[formData.powerFactor]}
-      />
-      <FormSelect
-        label="Diversity Factor"
-        name="diversityFactor"
-        value={formData.diversityFactor}
-        onChange={handleChange}
-        options={[formData.diversityFactor]}
-      />
-
-      {/* Submit */}
-      <button
-        type="submit"
-        className="mt-4 w-full bg-sky-500 text-white font-medium py-2 rounded-md text-sm hover:bg-sky-600 transition"
+    <div className="flex h-screen">
+      <form
+        onSubmit={handleSubmit}
+        className="w-[340px] h-[92vh] bg-white border-r border-gray-300 rounded-md pt-0 p-2 font-sans text-[13px] text-[#4B5563] overflow-auto"
       >
-        Calculate
-      </button>
-    </form>
+        {/* Fixed Header */}
+        <div className="sticky top-0 z-10 bg-white flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
+          <div>
+            <h1 className="text-[14px] font-semibold text-black leading-none">
+              Cable Sizing
+            </h1>
+            <p className="text-[11px] text-gray-400 mt-[2px]">No update yet</p>
+          </div>
+          <button className="w-[24px] h-[24px] bg-[#0083EE] text-white rounded-md flex items-center justify-center hover:bg-[#1C78DC] transition">
+            <ReloadIcon className="w-[16px] h-[16px] stroke-white" />
+          </button>
+        </div>
+        <div className="border-b border-gray-200 mb-3"></div>
+
+        {/* Dropdowns */}
+        <FormSelect
+          label="Select Building"
+          name="building"
+          value={formData.building}
+          onChange={handleChange}
+          options={["Residential Tower"]}
+        />
+        <FormSelect
+          label="Select Panel"
+          name="panel"
+          value={formData.panel}
+          onChange={handleChange}
+          options={["MDB"]}
+        />
+        <FormSelect
+          label="Select Connected Equipments"
+          name="equipment"
+          value={formData.equipment}
+          onChange={handleChange}
+          options={["ACDB"]}
+        />
+        <FormSelect
+          label="Cable Type"
+          name="cableType"
+          value={formData.cableType}
+          onChange={handleChange}
+          options={["XLPE"]}
+        />
+
+        {/* Input + unit fields */}
+        <FormInputWithUnit
+          label="Cable Length"
+          name="cableLength"
+          value={formData.cableLength}
+          unitName="cableLengthUnit"
+          unitValue={formData.cableLengthUnit}
+          onChange={handleChange}
+          unitOptions={["m"]}
+        />
+        <FormInputWithUnit
+          label="Number of Core"
+          name="numCore"
+          value={formData.numCore}
+          unitName="numCoreUnit"
+          unitValue={formData.numCoreUnit}
+          onChange={handleChange}
+          unitOptions={["Core"]}
+        />
+        <FormInputWithUnit
+          label="Cable Size"
+          name="cableSize"
+          value={formData.cableSize}
+          unitName="cableSizeUnit"
+          unitValue={formData.cableSizeUnit}
+          onChange={handleChange}
+          unitOptions={["mm"]}
+        />
+        <FormInputWithUnit
+          label="Connected Load"
+          name="connectedLoad"
+          value={formData.connectedLoad}
+          unitName="connectedLoadUnit"
+          unitValue={formData.connectedLoadUnit}
+          onChange={handleChange}
+          unitOptions={["KW"]}
+        />
+        <FormInputWithUnit
+          label="Voltage Drop"
+          name="voltageDrop"
+          value={formData.voltageDrop}
+          unitName="voltageDropUnit"
+          unitValue={formData.voltageDropUnit}
+          onChange={handleChange}
+          unitOptions={["V"]}
+        />
+
+        {/* Final 3 selects */}
+        <FormSelect
+          label="Breaker Size"
+          name="breakerSize"
+          value={formData.breakerSize}
+          onChange={handleChange}
+          options={[formData.breakerSize]}
+        />
+        <FormSelect
+          label="Power Factor"
+          name="powerFactor"
+          value={formData.powerFactor}
+          onChange={handleChange}
+          options={[formData.powerFactor]}
+        />
+        <FormSelect
+          label="Diversity Factor"
+          name="diversityFactor"
+          value={formData.diversityFactor}
+          onChange={handleChange}
+          options={[formData.diversityFactor]}
+        />
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="mt-4 w-full bg-sky-500 text-white font-medium py-2 rounded-md text-sm hover:bg-sky-600 transition"
+        >
+          Calculate
+        </button>
+      </form>
+      {/* Right: Floor Preview */}
+      <div className="flex-1 h-full">
+        <FloorPreview />
+      </div>
+    </div>
   );
 };
 

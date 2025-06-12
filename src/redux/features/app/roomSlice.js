@@ -4,10 +4,18 @@ const roomsSlice = createSlice({
   name: "rooms",
   initialState: [],
   reducers: {
-    // 1st reducer: Save room id and area when room is created
+    // 1st reducer: Save full room details when room is created
     addRoom: (state, action) => {
-      const { id, area } = action.payload;
-      state.push({ id, area, name: "" }); // initialize with empty name
+      const { id, area, x, y, width, height } = action.payload;
+      state.push({
+        id,
+        area,
+        x,
+        y,
+        width,
+        height,
+        name: "", // initialize with empty name
+      });
     },
 
     // 2nd reducer: Update the room name by matching room id
@@ -19,12 +27,24 @@ const roomsSlice = createSlice({
       }
     },
 
-    // 3rd reducer: Reset all rooms
+    // ✅ New: Update room position
+    updateRoomPosition: (state, action) => {
+      const { id, x, y } = action.payload;
+      const room = state.find((r) => r.id === id);
+      if (room) {
+        room.x = x;
+        room.y = y;
+      }
+    },
+
+    // 4th reducer: Reset all rooms
     resetRooms: () => {
       return [];
     },
   },
 });
 
-export const { addRoom, updateRoomName, resetRooms } = roomsSlice.actions;
+export const { addRoom, updateRoomName, updateRoomPosition, resetRooms } =
+  roomsSlice.actions;
+
 export default roomsSlice.reducer;
