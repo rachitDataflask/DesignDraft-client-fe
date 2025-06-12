@@ -17,8 +17,8 @@ const DrawingFile = () => {
   if (isError) return <div>Error loading project.</div>;
 
   return (
-    <div className="flex h-screen">
-      <div className="w-[340px] h-[92vh] border-r border-gray-300">
+    <div className="flex ">
+      <div className="w-[340px] h-[92vh] bg-white border-r border-gray-300 px-2 font-sans text-[13px] text-[#4B5563] overflow-auto">
         <DrawingFileSideBar />
       </div>
       <div className="flex-1 h-full">

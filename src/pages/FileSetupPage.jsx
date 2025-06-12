@@ -31,18 +31,16 @@ export default function FileSetupPage() {
   };
 
   return (
-    <div className="bg-[#f8f9fb] ">
+    <div className="bg-[#f8f9fb] h-screen flex flex-col">
       <Layout>
-        <div className="flex">
-          <div className="flex h-[calc(100vh-75px)] overflow-hidden">
-            <SidebarFilesetup
-              activeSection={activeSection}
-              setActiveSection={setActiveSection}
-            />
-            <div className="flex p-4 overflow-y-auto">{renderContent()}</div>
-          </div>
-          <div>{/* <FloorPlanEditor /> */}</div>
+        <div className="flex overflow-hidden">
+          <SidebarFilesetup
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+          />
+          <div className="flex overflow-y-auto">{renderContent()}</div>
         </div>
+        <div>{/* <FloorPlanEditor /> */}</div>
       </Layout>
     </div>
   );

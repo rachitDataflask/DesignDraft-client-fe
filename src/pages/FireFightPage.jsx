@@ -26,10 +26,10 @@ export default function FireFightPage() {
   };
 
   return (
-    <div className=" bg-[#f8f9fb]">
+    <div className=" bg-[#f8f9fb] h-screen flex flex-col">
       {/* <TopBarPrimary /> */}
       <TopBarSecondary />
-      <div className="flex h-[calc(100vh-75px)] overflow-hidden">
+      <div className="flex overflow-hidden">
         <SidebarFireFight
           activeSection={activeSection}
           setActiveSection={(section) => {
@@ -37,7 +37,7 @@ export default function FireFightPage() {
             setData(undefined); // Clear modal data on section change
           }}
         />
-        <div className="flex p-4 overflow-y-auto">{renderContent()}</div>
+        <div className="flex h-screen overflow-y-auto">{renderContent()}</div>
         {data && (
           <RightModal>
             {activeSection === "head-loss" && <FireHLFormModal data={data} />}

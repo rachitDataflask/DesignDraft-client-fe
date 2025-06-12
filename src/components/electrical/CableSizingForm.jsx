@@ -96,7 +96,7 @@ const CableSizingForm = () => {
     <div className="flex h-screen">
       <form
         onSubmit={handleSubmit}
-        className="w-[340px] h-[92vh] bg-white border-r border-gray-300 rounded-md pt-0 p-2 font-sans text-[13px] text-[#4B5563] overflow-auto"
+        className="w-[340px] h-[92vh] bg-white border-r border-gray-300 rounded-md pt-0 p-4 font-sans text-[13px] text-[#4B5563] overflow-auto"
       >
         {/* Fixed Header */}
         <div className="sticky top-0 z-10 bg-white flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">

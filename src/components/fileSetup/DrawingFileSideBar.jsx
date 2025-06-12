@@ -21,7 +21,7 @@ const DrawingFileSideBar = () => {
   const selectedScale = useSelector((state) => state.project.scale);
 
   // Convert pixel² to meter²
-  const areaInMeters = pixelArea ? pixelArea * 100 : 0;
+  const areaInMeters = pixelArea ? pixelArea / 10000 : 0;
 
   // Convert meter² → selected scale
   let convertedArea = areaInMeters;

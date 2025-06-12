@@ -29,7 +29,7 @@ export default function TopBarSecondary() {
       <div className="flex items-center gap-4">
         <div
           className="flex items-center gap-2 border border-[#D0D5DD] px-3 py-[6px] rounded-md text-[#344054] text- font-medium cursor-pointer hover:bg-[#F9FAFB] transition"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/design-calculation")}
         >
           <span className="text-lg mr-2 text-black">
             <BackArrowIcon />

@@ -85,25 +85,58 @@ const FloorPlanEditor = () => {
 
   const handleTransform = () => {
     const node = rectRef.current;
-    const scaleX = node.scaleX();
-    const scaleY = node.scaleY();
+    let scaleX = node.scaleX();
+    let scaleY = node.scaleY();
 
-    const updated = {
-      x: node.x(),
-      y: node.y(),
-      width: Math.max(5, node.width() * scaleX),
-      height: Math.max(5, node.height() * scaleY),
-      draggable: true,
-    };
+    let newWidth = node.width() * scaleX;
+    let newHeight = node.height() * scaleY;
+    let newX = node.x();
+    let newY = node.y();
 
+    // Clamp width and height so that it does not go out of screen bounds
+    const maxWidth = window.innerWidth - 450 - newX;
+    const maxHeight = window.innerHeight - 80 - newY;
+
+    if (newWidth > maxWidth) {
+      newWidth = maxWidth;
+      scaleX = newWidth / node.width();
+    }
+
+    if (newHeight > maxHeight) {
+      newHeight = maxHeight;
+      scaleY = newHeight / node.height();
+    }
+
+    if (newX < 0) {
+      const overflowX = -newX;
+      newX = 0;
+      newWidth -= overflowX;
+    }
+
+    if (newY < 0) {
+      const overflowY = -newY;
+      newY = 0;
+      newHeight -= overflowY;
+    }
+
+    // Set scale back to 1 to avoid compound scaling
     node.scaleX(1);
     node.scaleY(1);
 
+    const updated = {
+      x: newX,
+      y: newY,
+      width: Math.max(5, newWidth),
+      height: Math.max(5, newHeight),
+      draggable: true,
+    };
+
     dispatch(updateRectTransform(updated)); // Redux
-    console.log(`Updated area: ${updated.width * updated.height}px²`);
     dispatch(setArea(updated.width * updated.height));
     dispatch(setX(updated.x));
     dispatch(setY(updated.y));
+
+    console.log(`Updated area: ${updated.width * updated.height}px²`);
   };
 
   const handleNext = () => {
@@ -119,8 +152,8 @@ const FloorPlanEditor = () => {
         </button>
       </div> */}
       <Stage
-        width={window.innerWidth - 450}
-        height={window.innerHeight - 100}
+        width={window.innerWidth - 440}
+        height={window.innerHeight - 80}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

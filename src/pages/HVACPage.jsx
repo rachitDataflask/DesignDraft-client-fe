@@ -31,12 +31,12 @@ export default function HVACPage() {
   return (
     <div className="bg-[#f8f9fb] h-screen flex flex-col">
       <Layout />
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex overflow-hidden">
         <SidebarHVAC
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        <div className="flex-1 p-4 overflow-y-auto">{renderContent()}</div>
+        <div className="flex h-screen overflow-y-auto">{renderContent()}</div>
         {data && (
           <RightModal>
             {activeSection === "heat-load" && (
