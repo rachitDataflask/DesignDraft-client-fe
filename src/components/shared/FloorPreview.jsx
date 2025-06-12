@@ -23,7 +23,7 @@ const FloorPreview = () => {
 
   return (
     <div className="w-full h-full bg-white">
-      <Stage width={CANVAS_WIDTH} height={CANVAS_HEIGHT}>
+      <Stage width={window.innerWidth - 410} height={window.innerHeight}>
         <Layer>
           {entities.length > 0 ? (
             <EntityRender entities={entities} blocks={blocks} layers={layers} />

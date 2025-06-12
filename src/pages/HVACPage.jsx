@@ -36,7 +36,7 @@ export default function HVACPage() {
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        <div className="flex-1 p-4 overflow-y-auto">{renderContent()}</div>
+        <div className="flex h-screen overflow-y-auto">{renderContent()}</div>
         {data && (
           <RightModal>
             {activeSection === "heat-load" && (

@@ -12,6 +12,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""), // removes /api from request path
       },
+      "/api2": {
+        target: "http://localhost:8080/", // second backend
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api2/, ""),
+      },
     },
   },
 });

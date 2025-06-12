@@ -19,7 +19,7 @@ const DuctSizing = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-[340px] h-full p-4 bg-white rounded-xl shadow  text-sm font-medium space-y-4">
+      <div className="w-[340px] h-[92vh] p-4 bg-white border-r border-gray-300  text-sm font-medium space-y-4">
         {/* Header */}
         <div className="flex justify-between items-start">
           <div>

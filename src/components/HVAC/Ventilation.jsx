@@ -61,7 +61,7 @@ const VentilationForm = () => {
     <div className="flex h-screen">
       <form
         onSubmit={handleSubmit}
-        className="w-[340px] h-[600px] bg-white rounded-xl shadow-md text-sm font-medium relative flex flex-col overflow-hidden"
+        className="w-[340px] h-[92vh] bg-white border-r border-gray-300 text-sm font-medium relative flex flex-col overflow-hidden"
       >
         {/* Fixed Header */}
         <div className="p-4 border-b border-gray-200 bg-white flex items-start justify-between">

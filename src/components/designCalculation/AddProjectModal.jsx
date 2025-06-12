@@ -9,8 +9,15 @@ import {
   useGetProjectListQuery,
 } from "../../redux/features/api/api";
 
+import { useGetLocationListQuery } from "../../redux/features/api/adminDataApi";
+
 const AddProjectModal = ({ onClose, setProjectAdded }) => {
   const [addProject] = useAddProjectMutation();
+  const {
+    data: locationData,
+    isLoading: isLocationLoading,
+    isError: isLocationError,
+  } = useGetLocationListQuery();
   const [selectedFile, setSelectedFile] = useState(null);
 
   const token = localStorage.getItem("token");
@@ -139,9 +146,27 @@ const AddProjectModal = ({ onClose, setProjectAdded }) => {
               onChange={handleChange}
               className="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-500 focus:outline-none bg-gray-200"
             >
-              <option value="">Select</option>
-              <option value="Delhi">Delhi</option>
-              <option value="Noida">Noida</option>
+              <option value="">Select Location</option>
+              {/* Loading State */}
+              {isLocationLoading && (
+                <option value="" disabled>
+                  Loading locations...
+                </option>
+              )}
+
+              {/* Error State */}
+              {isLocationError && (
+                <option value="" disabled>
+                  Error loading locations
+                </option>
+              )}
+
+              {/* Success State */}
+              {locationData?.map((loc) => (
+                <option key={loc._id} value={loc._id}>
+                  {loc.name}
+                </option>
+              ))}
             </select>
           </div>
 

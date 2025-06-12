@@ -70,7 +70,7 @@ const BreakerSizingForm = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-[340px] h-[85vh] bg-white border border-gray-300 rounded-md pt-0 p-2 font-sans text-[13px] text-[#4B5563] overflow-auto">
+      <div className="w-[340px] h-[92vh] bg-white border-r border-gray-300 rounded-md pt-0 p-2 font-sans text-[13px] text-[#4B5563] overflow-auto">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-white flex justify-between items-start px-4 pt-3 pb-2 border-b border-[#E5E7EB]">
           <div>

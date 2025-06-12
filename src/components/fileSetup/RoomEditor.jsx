@@ -12,12 +12,13 @@ import {
 } from "../../redux/features/app/roomSlice";
 
 const RoomEditor = () => {
-  const [floorPlan, setFloorPlan] = useState(null);
+  // const [floorPlan, setFloorPlan] = useState(null);
   const [newRoom, setNewRoom] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState(null);
 
+  const floorPlan = useSelector((state) => state.floorPlan.rect); // ⬅️ Redux-based rect
   const rooms = useSelector((state) => state.rooms);
   const dispatch = useDispatch();
 
@@ -31,10 +32,10 @@ const RoomEditor = () => {
   const blocks = data?.dxf_blocks || {};
   const layers = data?.dxf_layers || {};
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("floorPlan"));
-    if (data) setFloorPlan(data);
-  }, []);
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem("floorPlan"));
+  //   if (data) setFloorPlan(data);
+  // }, []);
 
   const isInsideFloor = (x, y) => {
     if (!floorPlan) return false;

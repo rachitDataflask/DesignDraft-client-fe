@@ -29,14 +29,14 @@ export default function ElectricalPage() {
   };
 
   return (
-    <div className="bg-[#f8f9fb] ">
+    <div className="bg-[#f8f9fb] h-screen flex flex-col">
       <Layout />
       <div className="flex overflow-hidden">
         <SidebarElectrical
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        <div className="flex p-4 overflow-y-auto">{renderContent()}</div>
+        <div className="flex h-screen overflow-y-auto">{renderContent()}</div>
       </div>
     </div>
   );

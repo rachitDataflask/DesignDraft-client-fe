@@ -105,7 +105,7 @@ const HeatLoad = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="bg-white px-4 pt-4 pb-6 rounded-[10px] border border-gray-200 w-[340px] font-sans text-[13px] overflow-hidden relative h-full overflow-y-auto flex flex-col">
+      <div className="bg-white px-4 pt-4 pb-6 border border-gray-200 w-[340px] font-sans text-[13px] overflow-hidden relative h-[92vh] overflow-y-auto flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-start mb-3 sticky top-0 bg-white z-10 pb-3">
           <div>
@@ -149,7 +149,7 @@ const HeatLoad = () => {
                     <option value="">Select a Room</option>
                     {rooms.map((room, index) => (
                       <option key={room.id || index} value={room.name}>
-                        {room.name || `Room ${room.id || index + 1}`}
+                        {room.name}
                       </option>
                     ))}
                   </select>

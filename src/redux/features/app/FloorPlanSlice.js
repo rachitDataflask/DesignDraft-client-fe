@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   rect: null, // Persisted rectangle
+  area: 0,
 };
 
 const floorPlanSlice = createSlice({
@@ -28,6 +29,12 @@ const floorPlanSlice = createSlice({
     resetFloorPlan(state) {
       state.rect = null;
     },
+    setArea: (state, action) => {
+      state.area = action.payload;
+    },
+    resetArea(state) {
+      state.area = null;
+    },
   },
 });
 
@@ -36,6 +43,8 @@ export const {
   updateRectPosition,
   updateRectTransform,
   resetFloorPlan,
+  setArea,
+  resetArea,
 } = floorPlanSlice.actions;
 
 export default floorPlanSlice.reducer;

@@ -49,9 +49,9 @@ export default function PlumbingPage() {
   };
 
   return (
-    <div className=" bg-[#f8f9fb]">
+    <div className=" bg-[#f8f9fb] h-screen flex flex-col">
       <TopBarSecondary />
-      <div className="flex h-[calc(100vh-75px)] overflow-hidden">
+      <div className="flex overflow-hidden">
         <SidebarPlumbing
           activeSection={activeSection}
           setActiveSection={(section) => {
@@ -59,7 +59,7 @@ export default function PlumbingPage() {
             setData(undefined); // Clear modal data on section change
           }}
         />
-        <div className="flex p-4 overflow-y-auto">{renderContent()}</div>
+        <div className="flex h-screen overflow-y-auto">{renderContent()}</div>
         {data && (
           <RightModal>
             {activeSection === "water-demand" && (
@@ -71,7 +71,9 @@ export default function PlumbingPage() {
             {activeSection === "drainage-pipe" && (
               <DrainagePipesModal data={data} />
             )}
-            {activeSection === "head-loss" && <PlumbingHLFormModal data={data} />}
+            {activeSection === "head-loss" && (
+              <PlumbingHLFormModal data={data} />
+            )}
             {activeSection === "plumbing-pump" && (
               <PlumbingPumpModal data={data} />
             )}
